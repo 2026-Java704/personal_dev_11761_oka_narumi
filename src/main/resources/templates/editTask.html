@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>タスク変更</title>
+</head>
+
+<body>
+	<form th:action="@{/tasks/{taskId}/edit(taskId=${task.id})}" method="post">
+		<table border="1">
+			<tr>
+				<th>NO</th>
+				<th>タイトル</th>
+				<th>カテゴリー</th>
+				<th>期限</th>
+				<th>進捗状況</th>
+				<th>メモ</th>
+			</tr>
+			<tr>
+				<td th:text="${task.id}"></td>
+				<td>
+					<input type="text" name="title" th:value="${task.title}">
+				</td>
+				<td th:text="${task.category.name}"></td>
+				<td th:text="${task.closing_date}"></td>
+				<td th:if="${task.progress==0}">未着手</td>
+				<td th:if="${task.progress==1}">進行中</td>
+				<td th:if="${task.progress==2}">完了</td>
+				<td>
+					<input type="text" name="memo" th:value="${task.memo}">
+				</td>
+			</tr>
+		</table>
+
+		<button>更新</button>
+	</form>
+</body>
+
+</html>

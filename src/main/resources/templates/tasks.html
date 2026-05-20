@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>ToDoアプリ</title>
+</head>
+
+<body>
+	<header th:replace="~{header}"></header>
+
+	<a href="/tasks">全タスク</a>
+	<a th:each="c:${categories}" th:href="'/tasks?categoryId='+${c.id}">
+		<span th:text="${c.name}" style="padding-left: 10px;"></span>
+	</a>
+	<table border="1">
+		<tr>
+			<th>NO</th>
+			<th>タイトル</th>
+			<th>カテゴリー</th>
+			<th>期限</th>
+			<th>進捗状況</th>
+			<th>メモ</th>
+			<th>変更</th>
+			<th>削除</th>
+		</tr>
+		<tr th:each="task:${tasks}">
+			<td th:text="${task.id}"></td>
+			<td th:text="${task.title}"></td>
+			<td th:text="${task.category.name}"></td>
+			<td th:text="${task.closing_date}"></td>
+			<td th:if="${task.progress==0}">未着手</td>
+			<td th:if="${task.progress==1}">進行中</td>
+			<td th:if="${task.progress==2}">完了</td>
+			<td th:text="${task.memo}"></td>
+			<td>
+				<form th:action="@{/tasks/{taskId}/edit(taskId=${task.id})}" method="get">
+					<button>更新</button>
+				</form>
+			</td>
+			<td>
+				<form th:action="@{/tasks/{taskId}/delete(taskId=${task.id})}" method="post">
+					<button>削除</button>
+				</form>
+			</td>
+		</tr>
+	</table>
+	<br>
+	<a href="/tasks/new">新規作成</a>
+
+</body>
+
+</html>

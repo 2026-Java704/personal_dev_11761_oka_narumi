@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,21 +12,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.User;
+import com.example.demo.model.Account;
 import com.example.demo.repository.UserRepository;
 
 @Controller
 public class UserController {
 	private final UserRepository userRepository;
+	private final HttpSession session;
+	private final Account account;
 
-	public UserController(UserRepository userRepository) {
+	public UserController(UserRepository userRepository, HttpSession session, Account account) {
+
 		this.userRepository = userRepository;
+		this.session = session;
+		this.account = account;
 	}
 
 	// ログイン画面を表示
 	@GetMapping({ "/", "/login" })
 	public String index() {
 		// セッション情報を全てクリアする
-
+		session.invalidate();
 		return "login";
 	}
 
@@ -45,14 +53,13 @@ public class UserController {
 			errorList.add("パスワードを入力してください");
 		}
 
-		// ユーザークラスのオブジェクト（モデル）を生成
-		User user = new User(email, password);
 		// Thymeleafに渡すデータ（モデル）を追加
-		model.addAttribute("user", user);
 
 		// エラー発生時はお問い合わせフォームに戻す
 		if (errorList.size() > 0) {
 			model.addAttribute("errorList", errorList);
+			model.addAttribute("email", email);
+			model.addAttribute("password", password);
 			return "login";
 		}
 
@@ -62,12 +69,15 @@ public class UserController {
 			model.addAttribute("message", "メールアドレスとパスワードが一致しませんでした");
 			return "login";
 		}
-		User user1 = userList.get(0);
+		User user = userList.get(0);
 		// セッション管理されたアカウント情報にIDと名前をセット
-		user.setId(user1.getId());
-		user.setName(user1.getName());
-		// 「/login」へのリダイレクト
-		return "redirect:/login";
+
+		account.setName(user.getName());
+
+		// Thymeleafに渡すデータ（モデル）を追加
+
+		// 「/tasks」へのリダイレクト
+		return "redirect:/tasks";
 
 	}
 
@@ -101,20 +111,23 @@ public class UserController {
 		}
 
 		// ユーザークラスのオブジェクト（モデル）を生成
-		User user = new User(name, email, password);
-		// Thymeleafに渡すデータ（モデル）を追加
-		model.addAttribute("user", user);
 
 		// エラー発生時はお問い合わせフォームに戻す
 		if (errorList.size() > 0) {
 			model.addAttribute("errorList", errorList);
+			model.addAttribute("name", name);
+			model.addAttribute("email", email);
+			model.addAttribute("password", password);
 			return "userForm";
 		}
 
 		// Userオブジェクトの生成
-		User user1 = new User(name, email, password);
+		User user = new User(email, name, password);
 		// usersテーブルへの反映（INSERT）
-		userRepository.save(user1);
+		userRepository.save(user);
+
+		// Thymeleafに渡すデータ（モデル）を追加
+		model.addAttribute("user", user);
 		// 「/login」にGETでリクエストし直す（リダイレクト）
 		return "redirect:/login";
 	}

@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,8 +19,9 @@ public class Task {
 	private Integer id; // カテゴリーID
 	@Column(name = "user_id")
 	private Integer userId;
-	@Column(name = "category_id")
-	private Integer categoryId;
+	@ManyToOne
+	@JoinColumn(name = "category_id")
+	private Category category; // カテゴリー
 
 	private String title;
 	private LocalDate closing_date;
@@ -28,14 +31,13 @@ public class Task {
 	public Task() {
 	}
 
-	public Task(Integer userId, Integer categoryId, String title, LocalDate closing_date, Integer progress,
-			String memo) {
-		this.userId = userId;
-		this.categoryId = categoryId;
+	public Task(Category category, String title, LocalDate closing_date, Integer progress, String memo) {
+		this.category = category;
 		this.title = title;
 		this.closing_date = closing_date;
 		this.progress = progress;
 		this.memo = memo;
+
 	}
 
 	public Integer getId() {
@@ -54,12 +56,12 @@ public class Task {
 		this.userId = userId;
 	}
 
-	public Integer getCategoryId() {
-		return categoryId;
+	public Category getCategory() {
+		return category;
 	}
 
-	public void setCategoryId(Integer categoryId) {
-		this.categoryId = categoryId;
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 	public String getTitle() {

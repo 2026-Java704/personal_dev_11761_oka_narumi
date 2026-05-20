@@ -10,20 +10,21 @@
 	<h1>新規登録</h1>
 
 	<form action="/users/add" method="post">
-		<ul th:if="${errorList}">
-			<li th:each="error:${errorList}" th:text="${error}"></li>
-		</ul>
+		<div th:each="error:${errorList}">
+			<span th:text="${error}" style="color: red"></span>
+			<br>
+		</div>
 		<table border="1">
 			<tr>
 				<th>名前</th>
 				<td>
-					<input type="text" name="name" placeholder="名前">
+					<input type="text" name="name" placeholder="名前" th:value="${name}">
 				</td>
 			</tr>
 			<tr>
 				<th>メールアドレス</th>
 				<td>
-					<input type="text" name="email" placeholder="メールアドレス">
+					<input type="text" name="email" placeholder="メールアドレス" th:value="${email}">
 				</td>
 			</tr>
 			<tr>

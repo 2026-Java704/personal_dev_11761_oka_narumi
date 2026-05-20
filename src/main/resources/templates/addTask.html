@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>新規タスク作成</title>
+</head>
+
+<body>
+	<form action="/tasks/add" method="post">
+		<table border="1">
+			<tr>
+				<th>カテゴリー</th>
+				<td>
+					<select name = "categoryId">
+						<option th:value = "1">運動</option>
+						<option th:value = "2">勉強</option>
+						<option th:value = "3">その他</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>タイトル</th>
+				<td>
+					<input type="text" name="title">
+				</td>
+			</tr>
+			<tr>
+				<th>期限</th>
+				<td>
+					<input type="date" name="closing_date">
+				</td>
+			</tr>
+			<tr>
+				<th>進捗状況</th>
+				<td>
+					<select name="progress">
+						<option th:value="0">未着手</option>
+						<option th:value="1">進行中</option>
+						<option th:value="2">完了</option>
+				</td>
+			</tr>
+			<tr>
+				<th>メモ</th>
+				<td>
+					<textarea name="memo" cols="30" rows="5">
+					</textarea>
+				</td>
+			</tr>
+		</table>
+		<button>登録</button>
+	</form>
+</body>
+
+</html>
