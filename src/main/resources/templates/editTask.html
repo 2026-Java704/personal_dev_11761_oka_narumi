@@ -10,35 +10,34 @@
 <body>
 	<form th:action="@{/tasks/{taskId}/edit(taskId=${task.id})}" method="post">
 		<table border="1">
-					<tr>
-						<th>NO</th>
-						<th>タイトル</th>
-						<th>カテゴリー</th>
-						<th>期限</th>
-						<th>進捗状況</th>
-						<th>メモ</th>
-					</tr>
-					<tr>
-						<td th:text="${task.id}"></td>
-						<td>
-							<input type="text" name="title" th:value="${task.title}">
-						</td>
-						<td> <select name="categoryId">
-												<option th:selected="${value == '1'}" value = "1">運動</option>
-												<option th:selected="${value == '2'}" value = "2">勉強</option>
-												<option th:selected="${value == '3'}" value = "3">その他</option>
-											</select></td>
-						<td><input type="date" name="closing_date" th:value="${task.closing_date}"></td>
-						<td> <select name="progress" th:value="${task.progress}">
-												<option th:value="0">未着手</option>
-												<option th:value="1">進行中</option>
-												<option th:value="2">完了</option>
-											</select></td>
-						<td>
-							<input type="text" name="memo" th:value="${task.memo}">
-						</td>
-					</tr>
-				</table>
+			<tr>
+				<th>NO</th>
+				<th>タイトル</th>
+				<th>カテゴリー</th>
+				<th>期限</th>
+				<th>進捗状況</th>
+				<th>メモ</th>
+			</tr>
+			<tr>
+				<td th:text="${task.id}"></td>
+				<td>
+					<input type="text" name="title" th:value="${task.title}">
+				</td>
+				<td> <select name="categoryId">
+						<option th:each="category:${categories}" th:value="${category.id}"
+							th:text="${category.name}" th:selected="${category.id == selectedCategoryId}"></option>
+					</select></td>
+				<td><input type="date" name="closing_date" th:value="${task.closing_date}"></td>
+				<td> <select name="progress" th:value="${task.progress}">
+						<option th:value="0">未着手</option>
+						<option th:value="1">進行中</option>
+						<option th:value="2">完了</option>
+					</select></td>
+				<td>
+					<input type="text" name="memo" th:value="${task.memo}">
+				</td>
+			</tr>
+		</table>
 
 		<button>更新</button>
 	</form>

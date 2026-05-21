@@ -30,7 +30,9 @@ public class TaskController {
 	// タスク一覧表示
 	@GetMapping("/tasks")
 	public String index(
-			@RequestParam(defaultValue = "") Integer categoryId,
+			@RequestParam(required = false) Integer categoryId,
+			@RequestParam(defaultValue = "") String title,
+
 			Model model) {
 
 		// 全カテゴリー一覧を取得
@@ -60,7 +62,7 @@ public class TaskController {
 	//新規タスク処理
 	@PostMapping("/tasks/add")
 	public String add(
-			@RequestParam(defaultValue = "") Integer categoryId,
+			@RequestParam(required = false) Integer categoryId,
 			@RequestParam(defaultValue = "") String title,
 			@RequestParam(defaultValue = "") LocalDate closing_date,
 			@RequestParam(defaultValue = "") Integer progress,
@@ -79,12 +81,24 @@ public class TaskController {
 	}
 
 	//タスク変更画面表示
+	//	@GetMapping("/tasks/{id}/edit")
+	//	public String edit(@PathVariable Integer id, Model model) {
+	//
+	//		//tasksテーブルをID（主キー）で検索
+	//		Task task = taskRepository.findById(id).get();
+	//		model.addAttribute("task", task);
+	//		return "editTask";
+	//	}
+
 	@GetMapping("/tasks/{id}/edit")
 	public String edit(@PathVariable Integer id, Model model) {
 
-		//tasksテーブルをID（主キー）で検索
 		Task task = taskRepository.findById(id).get();
+		List<Category> categoryList = categoryRepository.findAll();
+
 		model.addAttribute("task", task);
+		model.addAttribute("categories", categoryList);
+
 		return "editTask";
 	}
 

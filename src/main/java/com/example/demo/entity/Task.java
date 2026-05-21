@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 public class Task {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id; // カテゴリーID
+	private Integer id; // タスクID
 	@Column(name = "user_id")
 	private Integer userId;
 	@ManyToOne
