@@ -32,6 +32,7 @@ public class TaskController {
 	public String index(
 			@RequestParam(required = false) Integer categoryId,
 			@RequestParam(defaultValue = "") String title,
+			@RequestParam(defaultValue = "") String keyword,
 
 			Model model) {
 
@@ -41,12 +42,18 @@ public class TaskController {
 
 		// タスク一覧情報の取得
 		List<Task> taskList = null;
-		if (categoryId == null) {
-			taskList = taskRepository.findAll();
-		} else {
+		if (categoryId != null) {
 			// tasksテーブルをカテゴリーIDを指定して一覧を取得
 			taskList = taskRepository.findByCategoryId(categoryId);
+		} else if (keyword.length() > 0) {
+			// タイトルによる部分一致検索 
+			//taskList = taskRepository.findByNameLike("%" + keyword + "%");  //  // Likeを利用した場合は「%」が必要です
+			taskList = taskRepository.findByTitleContaining(keyword);
+		} else {
+			// 全商品検索
+			taskList = taskRepository.findAll();
 		}
+		model.addAttribute("keyword", keyword);
 		model.addAttribute("tasks", taskList);
 
 		return "tasks";
@@ -81,14 +88,6 @@ public class TaskController {
 	}
 
 	//タスク変更画面表示
-	//	@GetMapping("/tasks/{id}/edit")
-	//	public String edit(@PathVariable Integer id, Model model) {
-	//
-	//		//tasksテーブルをID（主キー）で検索
-	//		Task task = taskRepository.findById(id).get();
-	//		model.addAttribute("task", task);
-	//		return "editTask";
-	//	}
 
 	@GetMapping("/tasks/{id}/edit")
 	public String edit(@PathVariable Integer id, Model model) {

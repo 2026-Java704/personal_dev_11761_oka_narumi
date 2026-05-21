@@ -10,6 +10,11 @@
 <body>
 	<header th:replace="~{header}"></header>
 
+	<form action="/tasks" method="get">
+			タイトル<input type="text" name="keyword" th:value="${keyword}">
+			<button>検索</button>
+		</form>
+	
 	<a href="/tasks">全タスク</a>
 	<a th:each="c:${categories}" th:href="'/tasks?categoryId='+${c.id}">
 		<span th:text="${c.name}" style="padding-left: 10px;"></span>
@@ -41,7 +46,7 @@
 			</td>
 			<td>
 				<form th:action="@{/tasks/{taskId}/delete(taskId=${task.id})}" method="post">
-					<button>削除</button>
+					<button  type="submit" onclick="return confirm('本当に削除しますか？');">削除</button>
 				</form>
 			</td>
 		</tr>

@@ -9,4 +9,7 @@ import com.example.demo.entity.Task;
 public interface TaskRepository extends JpaRepository<Task, Integer> {
 	List<Task> findByCategoryId(Integer categoryId);
 
+	// SELECT * FROM items WHERE name LIKE ?
+	// List<Task> findByNameLike(String keyword);
+	List<Task> findByTitleContaining(String keyword);
 }
