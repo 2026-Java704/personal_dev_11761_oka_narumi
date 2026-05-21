@@ -92,7 +92,7 @@ public class TaskController {
 	@PostMapping("/tasks/{id}/edit")
 	public String update(
 			@PathVariable Integer id,
-			@RequestParam(defaultValue = "") Integer categoryId,
+			@RequestParam(required = false) Integer categoryId,
 			@RequestParam(defaultValue = "") String title,
 			@RequestParam(defaultValue = "") LocalDate closing_date,
 			@RequestParam(defaultValue = "") Integer progress,
@@ -100,7 +100,10 @@ public class TaskController {
 
 		//tasksテーブルをID（主キー）で検索
 		Task task = taskRepository.findById(id).get();
-		//		task.setCategoryId(categoryId);
+
+		Category category = categoryRepository.findById(categoryId).get();
+
+		task.setCategory(category);
 		task.setTitle(title);
 		task.setClosing_date(closing_date);
 		task.setProgress(progress);

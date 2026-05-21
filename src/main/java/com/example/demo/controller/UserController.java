@@ -53,8 +53,6 @@ public class UserController {
 			errorList.add("パスワードを入力してください");
 		}
 
-		// Thymeleafに渡すデータ（モデル）を追加
-
 		// エラー発生時はお問い合わせフォームに戻す
 		if (errorList.size() > 0) {
 			model.addAttribute("errorList", errorList);
@@ -73,8 +71,6 @@ public class UserController {
 		// セッション管理されたアカウント情報にIDと名前をセット
 
 		account.setName(user.getName());
-
-		// Thymeleafに渡すデータ（モデル）を追加
 
 		// 「/tasks」へのリダイレクト
 		return "redirect:/tasks";
@@ -109,8 +105,6 @@ public class UserController {
 		if (password == null || password.length() == 0) {
 			errorList.add("パスワードを入力してください");
 		}
-
-		// ユーザークラスのオブジェクト（モデル）を生成
 
 		// エラー発生時はお問い合わせフォームに戻す
 		if (errorList.size() > 0) {
