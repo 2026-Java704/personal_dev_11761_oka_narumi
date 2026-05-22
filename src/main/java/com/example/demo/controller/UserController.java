@@ -29,7 +29,7 @@ public class UserController {
 	}
 
 	// ログイン画面を表示
-	@GetMapping({ "/", "/login" })
+	@GetMapping({ "/", "/login", "/logout" })
 	public String index() {
 		// セッション情報を全てクリアする
 		session.invalidate();
@@ -69,7 +69,7 @@ public class UserController {
 		}
 		User user = userList.get(0);
 		// セッション管理されたアカウント情報にIDと名前をセット
-
+		account.setId(user.getId());
 		account.setName(user.getName());
 
 		// 「/tasks」へのリダイレクト
@@ -104,6 +104,11 @@ public class UserController {
 		//　パスワードが空の場合にエラーとする
 		if (password == null || password.length() == 0) {
 			errorList.add("パスワードを入力してください");
+		}
+
+		List<User> userList = userRepository.findByEmail(email);
+		if (userList != null && userList.size() > 0) {
+			errorList.add("登録済みのメールアドレスです");
 		}
 
 		// エラー発生時はお問い合わせフォームに戻す

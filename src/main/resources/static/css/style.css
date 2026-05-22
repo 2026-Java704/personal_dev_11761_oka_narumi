@@ -3,18 +3,30 @@ body {
 	background-color: #EFF0F7; /* 背景色  */
 	text-align: center; /* 中央寄せ */
     min-width: 900px; /* 最小幅 */
+    font-family: 'Helvetica Neue', Arial, sans-serif; /* ★文字のフォントを綺麗に */
+    color: #333333;
 }
+
 /* ヘッダー、ナビゲーションメニュー、フッター */
 header, nav, footer {
 	background-color: #45496a; /* 背景色 */
 	color: #ffffff; /* 文字色 */
-	padding-top: 5px; /* 内側余白(上) */
-	padding-bottom: 5px; /* 内側余白(下) */
+	padding-top: 10px; /* ★内側余白を少し広げてゆったりと */
+	padding-bottom: 10px;
 }
+
 /* ヘッダー、ナビゲーション内リンク */
 header a, nav a {
 	color: #ffffff;
+    text-decoration: none; /* ★リンクの下線を消す */
+    transition: color 0.2s; /* ★変化を滑らかに */
 }
+
+/* リンクの上にマウスが乗ったとき */
+header a:hover, nav a:hover {
+    color: #f1b2b2; /* ★ボタンのホバー色と合わせて統一感を出す */
+}
+
 /* ヘッダー内見出し */
 header h1 {
 	font-size: 20pt;
@@ -23,46 +35,95 @@ header h1 {
 
 /* 仕切り線 */
 hr {
+	border: none;
 	border-top: 2px dashed #7d8bae;
+    margin: 20px 0;
 }
+
 /* メイン */
 main {
 	background-color: #FFFFFF;
 	min-height: 50px;
 	padding: 20px;
+    max-width: 1000px; /* ★広がりすぎないように制限 */
+    margin: 20px auto; /* ★メインエリア自体を中央寄せ */
+    border-radius: 8px; /* ★角をほんのり丸くしてモダンに */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05); /* ★薄い影をつけて立体感を */
 }
+
 /* 表線 */
 table, th, td {
 	border-collapse: collapse;
 	border: 1px solid #7d8bae;
 }
+
 /* 表 */
 table {
-    margin: 5px auto;
+    margin: 15px auto;
     min-width: 800px;
 }
+
 /* 表見出しセル */
 table th {
 	background: #7d8bae;
 	color: #ffffff;
+    padding: 10px; /* ★文字の周りに余白を */
 }
-/* 送信ボタン */
-button {
-	margin: 2px;
-	padding: 5px 20px;
+
+/* 表データセル */
+table td {
+    padding: 8px; /* ★文字が線にピタッとくっつかないように */
+}
+
+/* --- ボタンの使い分け --- */
+
+/* 基本の送信・登録ボタン（フォーム用） */
+button, .btn-main {
+	margin: 5px;
+	padding: 8px 20px;
 	background-color: #e5857b;
 	color: #ffffff;
 	border: none;
-	width:100px;
+	width: 120px; /* ★少しだけ横幅に余裕を */
 	cursor: pointer;
+    border-radius: 4px; /* ★少し角を丸く */
+    font-weight: bold;
+    transition: background-color 0.2s;
 }
-/* 送信ボタン(マウスオーバー時) */
-button:hover {
+
+button:hover, .btn-main:hover {
 	background-color: #f1b2b2;
 }
+
+/* ★追加：テーブル内用の小さなボタン（変更・削除用） */
+table button {
+    width: 70px; /* ★100pxだと大きすぎるのでコンパクトに */
+    padding: 4px 0;
+    font-size: 10pt;
+    margin: 2px;
+}
+
+/* 削除ボタンだけ赤くして危険を知らせるプロの技 */
+table td:last-child button {
+    background-color: #7d8bae; /* 削除は少し落ち着いた色に（お好みで変えてください） */
+}
+table td:last-child button:hover {
+    background-color: #a1b0d4;
+}
+
+/* ★追加：入力フォーム（input, select, textarea）の見た目を整える */
+input[type="text"], input[type="date"], select, textarea {
+    border: 1px solid #7d8bae;
+    padding: 6px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 11pt;
+}
+
 /* エラーメッセージ */
 ul.error {
 	color: red;
 	list-style: none;
 	padding-left: 0;
+    font-weight: bold;
 }

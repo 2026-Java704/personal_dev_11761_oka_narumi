@@ -11,10 +11,10 @@
 	<header th:replace="~{header}"></header>
 
 	<form action="/tasks" method="get">
-			タイトル<input type="text" name="keyword" th:value="${keyword}">
-			<button>検索</button>
-		</form>
-	
+		タイトル<input type="text" name="keyword" th:value="${keyword}">
+		<button>検索</button>
+	</form>
+
 	<a href="/tasks">全タスク</a>
 	<a th:each="c:${categories}" th:href="'/tasks?categoryId='+${c.id}">
 		<span th:text="${c.name}" style="padding-left: 10px;"></span>
@@ -26,6 +26,7 @@
 			<th>カテゴリー</th>
 			<th>期限</th>
 			<th>進捗状況</th>
+			<th>重要度</th>
 			<th>メモ</th>
 			<th>変更</th>
 			<th>削除</th>
@@ -35,9 +36,16 @@
 			<td th:text="${task.title}"></td>
 			<td th:text="${task.category.name}"></td>
 			<td th:text="${task.closing_date}"></td>
-			<td th:if="${task.progress==0}">未着手</td>
-			<td th:if="${task.progress==1}">進行中</td>
-			<td th:if="${task.progress==2}">完了</td>
+			<td>
+				<span th:if="${task.progress==0}">未着手</span>
+				<span th:if="${task.progress==1}">進行中</span>
+				<span th:if="${task.progress==2}">完了</span>
+			</td>	
+			<td>
+				<span th:if="${task.importance==0}">高</span>
+				<span th:if="${task.importance==1}">中</span>
+				<span th:if="${task.importance==2}">低</span>
+			</td>
 			<td th:text="${task.memo}"></td>
 			<td>
 				<form th:action="@{/tasks/{taskId}/edit(taskId=${task.id})}" method="get">

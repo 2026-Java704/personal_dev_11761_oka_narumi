@@ -12,4 +12,10 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
 	// SELECT * FROM items WHERE name LIKE ?
 	// List<Task> findByNameLike(String keyword);
 	List<Task> findByTitleContaining(String keyword);
+
+	List<Task> findByUserId(Integer userId);
+
+	List<Task> findByUserIdAndCategoryId(Integer userId, Integer categoryId);
+
+	List<Task> findByUserIdAndTitleContaining(Integer userId, String keyword);
 }

@@ -16,6 +16,7 @@
 				<th>カテゴリー</th>
 				<th>期限</th>
 				<th>進捗状況</th>
+				<th>重要度</th>
 				<th>メモ</th>
 			</tr>
 			<tr>
@@ -24,8 +25,8 @@
 					<input type="text" name="title" th:value="${task.title}">
 				</td>
 				<td> <select name="categoryId">
-						<option th:each="category:${categories}" th:value="${category.id}"
-							th:text="${category.name}" th:selected="${category.id == selectedCategoryId}"></option>
+						<option th:each="category:${categories}" th:value="${category.id}" th:text="${category.name}"
+							th:selected="${category.id == task.category.id}"></option>
 					</select></td>
 				<td><input type="date" name="closing_date" th:value="${task.closing_date}"></td>
 				<td> <select name="progress" th:field="${task.progress}">
@@ -33,6 +34,13 @@
 						<option th:value="1">進行中</option>
 						<option th:value="2">完了</option>
 					</select></td>
+				<td> <select name="importance" th:field="${task.importance}">
+						<option th:value="0">高</option>
+						<option th:value="1">中</option>
+						<option th:value="2">低</option>
+					</select></td>
+
+				</td>
 				<td>
 					<input type="text" name="memo" th:value="${task.memo}">
 				</td>

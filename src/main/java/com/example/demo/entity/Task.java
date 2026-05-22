@@ -26,16 +26,20 @@ public class Task {
 	private String title;
 	private LocalDate closing_date;
 	private Integer progress;
+	private Integer importance; //
 	private String memo;
 
 	public Task() {
 	}
 
-	public Task(Category category, String title, LocalDate closing_date, Integer progress, String memo) {
+	public Task(Integer userId, Category category, String title, LocalDate closing_date,
+			Integer progress, Integer importance, String memo) {
+		this.userId = userId;
 		this.category = category;
 		this.title = title;
 		this.closing_date = closing_date;
 		this.progress = progress;
+		this.importance = importance;
 		this.memo = memo;
 
 	}
@@ -94,6 +98,14 @@ public class Task {
 
 	public void setMemo(String memo) {
 		this.memo = memo;
+	}
+
+	public Integer getImportance() {
+		return importance;
+	}
+
+	public void setImportance(Integer importance) {
+		this.importance = importance;
 	}
 
 }

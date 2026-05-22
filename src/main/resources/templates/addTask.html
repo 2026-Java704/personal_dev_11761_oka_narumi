@@ -8,15 +8,19 @@
 </head>
 
 <body>
+	<div th:each="error:${errorList}">
+					<span th:text="${error}" style="color: red"></span>
+					<br>
+				</div>
 	<form action="/tasks/add" method="post">
 		<table border="1">
 			<tr>
 				<th>カテゴリー</th>
 				<td>
-					<select name = "categoryId">
-						<option th:value = "1">運動</option>
-						<option th:value = "2">勉強</option>
-						<option th:value = "3">その他</option>
+					<select name="categoryId">
+						<option th:value="1">運動</option>
+						<option th:value="2">勉強</option>
+						<option th:value="3">その他</option>
 					</select>
 				</td>
 			</tr>
@@ -39,6 +43,16 @@
 						<option th:value="0">未着手</option>
 						<option th:value="1">進行中</option>
 						<option th:value="2">完了</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>重要度</th>
+				<td>
+					<select name="importance">
+						<option th:value="0">高</option>
+						<option th:value="1">中</option>
+						<option th:value="2">低</option>
 					</select>
 				</td>
 			</tr>

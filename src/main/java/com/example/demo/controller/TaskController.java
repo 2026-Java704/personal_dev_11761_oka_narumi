@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.Category;
 import com.example.demo.entity.Task;
+import com.example.demo.model.Account;
 import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.TaskRepository;
 
@@ -19,12 +21,15 @@ import com.example.demo.repository.TaskRepository;
 public class TaskController {
 	private final TaskRepository taskRepository;
 	private final CategoryRepository categoryRepository;
+	private final Account account;
 
 	public TaskController(
 			TaskRepository taskRepository,
-			CategoryRepository categoryRepository) {
+			CategoryRepository categoryRepository,
+			Account account) {
 		this.taskRepository = taskRepository;
 		this.categoryRepository = categoryRepository;
+		this.account = account;
 	}
 
 	// タスク一覧表示
@@ -36,6 +41,10 @@ public class TaskController {
 
 			Model model) {
 
+		if (account.getId() == null) {
+			return "redirect:/login";
+		}
+
 		// 全カテゴリー一覧を取得
 		List<Category> categoryList = categoryRepository.findAll();
 		model.addAttribute("categories", categoryList);
@@ -43,15 +52,11 @@ public class TaskController {
 		// タスク一覧情報の取得
 		List<Task> taskList = null;
 		if (categoryId != null) {
-			// tasksテーブルをカテゴリーIDを指定して一覧を取得
-			taskList = taskRepository.findByCategoryId(categoryId);
+			taskList = taskRepository.findByUserIdAndCategoryId(account.getId(), categoryId);
 		} else if (keyword.length() > 0) {
-			// タイトルによる部分一致検索 
-			//taskList = taskRepository.findByNameLike("%" + keyword + "%");  //  // Likeを利用した場合は「%」が必要です
-			taskList = taskRepository.findByTitleContaining(keyword);
+			taskList = taskRepository.findByUserIdAndTitleContaining(account.getId(), keyword);
 		} else {
-			// 全商品検索
-			taskList = taskRepository.findAll();
+			taskList = taskRepository.findByUserId(account.getId());
 		}
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("tasks", taskList);
@@ -62,6 +67,11 @@ public class TaskController {
 	// 新規タスク画面の表示
 	@GetMapping("/tasks/new")
 	public String add() {
+
+		if (account.getId() == null) {
+			return "redirect:/login";
+		}
+
 		// addTask.htmlを出力
 		return "addTask";
 	}
@@ -73,16 +83,42 @@ public class TaskController {
 			@RequestParam(defaultValue = "") String title,
 			@RequestParam(defaultValue = "") LocalDate closing_date,
 			@RequestParam(defaultValue = "") Integer progress,
-			@RequestParam(defaultValue = "") String memo
+			@RequestParam(defaultValue = "") Integer importance,
+			@RequestParam(defaultValue = "") String memo,
 
-	) {
+			Model model) {
+
+		if (account.getId() == null) {
+			return "redirect:/login";
+		}
+
+		// エラーチェック
+		List<String> errorList = new ArrayList<>();
+		// メールアドレスが空の場合にエラーとする
+		if (title == null || title.length() == 0) {
+			errorList.add("タイトルを入力してください");
+		}
+		//　パスワードが空の場合にエラーとする
+		if (closing_date == null) {
+			errorList.add("期限を入力してください");
+		}
+
+		// エラー発生時はお問い合わせフォームに戻す
+		if (errorList.size() > 0) {
+			model.addAttribute("errorList", errorList);
+			model.addAttribute("title", title);
+			model.addAttribute("closing_date", closing_date);
+			return "addTask";
+		}
 
 		Category category = categoryRepository.findById(categoryId).get();
 
 		//Taskオブジェクトの生成
-		Task task = new Task(category, title, closing_date, progress, memo);
+		Task task = new Task(account.getId(), category, title, closing_date, progress, importance, memo);
 		//tasksテーブルへの反映（INSERT）
 		taskRepository.save(task);
+		//
+		task.setUserId(account.getId());
 		//「/tasks」にGETでリクエストしなおす（リダイレクト）
 		return "redirect:/tasks";
 	}
@@ -91,6 +127,10 @@ public class TaskController {
 
 	@GetMapping("/tasks/{id}/edit")
 	public String edit(@PathVariable Integer id, Model model) {
+
+		if (account.getId() == null) {
+			return "redirect:/login";
+		}
 
 		Task task = taskRepository.findById(id).get();
 		List<Category> categoryList = categoryRepository.findAll();
@@ -109,10 +149,20 @@ public class TaskController {
 			@RequestParam(defaultValue = "") String title,
 			@RequestParam(defaultValue = "") LocalDate closing_date,
 			@RequestParam(defaultValue = "") Integer progress,
+
+			@RequestParam(defaultValue = "") Integer importance,
 			@RequestParam(defaultValue = "") String memo) {
+
+		if (account.getId() == null) {
+			return "redirect:/login";
+		}
 
 		//tasksテーブルをID（主キー）で検索
 		Task task = taskRepository.findById(id).get();
+
+		if (!task.getUserId().equals(account.getId())) {
+			return "redirect:/tasks";
+		}
 
 		Category category = categoryRepository.findById(categoryId).get();
 
@@ -120,6 +170,7 @@ public class TaskController {
 		task.setTitle(title);
 		task.setClosing_date(closing_date);
 		task.setProgress(progress);
+		task.setImportance(importance);
 		task.setMemo(memo);
 
 		//tasksテーブルへの反映（UPDATE）
@@ -131,6 +182,17 @@ public class TaskController {
 	//削除処理
 	@PostMapping("/tasks/{id}/delete")
 	public String delete(@PathVariable Integer id) {
+
+		if (account.getId() == null) {
+			return "redirect:/login";
+		}
+
+		Task task = taskRepository.findById(id).get();
+
+		if (!task.getUserId().equals(account.getId())) {
+			return "redirect:/tasks";
+		}
+
 		//tasksテーブルから削除（DELETE）
 		taskRepository.deleteById(id);
 		//「/tasks」にGETでリクエストし直す（リダイレクト）
