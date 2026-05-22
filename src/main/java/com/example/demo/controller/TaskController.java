@@ -227,11 +227,24 @@ public class TaskController {
 	}
 
 	// 削除処理
-	@PostMapping("/{id}/delete")
+	@PostMapping("/categories/{id}/delete")
 	public String delete(@PathVariable Integer id, Model model) {
 
 		// テーブルから削除（DELETE）
 		categoryRepository.deleteById(id);
-		return "redirect:/tasks";
+		return "redirect:/categories/index";
+	}
+
+	// カテゴリー一覧表示
+	@GetMapping("/categories/index")
+	public String index(
+			@RequestParam(defaultValue = "") Integer categoryId,
+			Model model) {
+
+		// テーブルから全カテゴリー一覧を取得
+		List<Category> categoryList = categoryRepository.findAll();
+		model.addAttribute("categories", categoryList);
+
+		return "category";
 	}
 }

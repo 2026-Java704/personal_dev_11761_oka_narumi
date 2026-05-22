@@ -8,10 +8,11 @@
 
 <body>
 	<h1>カテゴリー一覧</h1>
+	<table border="1">
 	<tr>
 		<th>ID</th>
 		<th>カテゴリー名</th>
-<!--		<th></th>-->
+		<th>削除</th>
 <!--		<th></th>-->
 	</tr>
 	<tr th:each="category:${categories}">
@@ -22,16 +23,15 @@
 <!--				<input type="submit" value="更新">-->
 <!--			</form>-->
 <!--		</td>-->
-<!--		<td>-->
-<!--			<form th:action="'/admin/categories/'+${category.id}+'/delete'" method="post">-->
-<!--				<input type="submit" value="削除">-->
-<!--			</form>-->
-<!--		</td>-->
+		<td>
+			<form th:action="'/categories/'+${category.id}+'/delete'" method="post">
+				<input type="submit" value="削除">
+			</form>
+		</td>
 	</tr>
 	</table>
 
-	<a href="/admin/categories/add">新規登録</a><br>
-	<a href="/admin/items">商品管理</a>
+	<a href="/categories/add">カテゴリ登録へ戻る</a><br>
 </body>
 
 </html>
