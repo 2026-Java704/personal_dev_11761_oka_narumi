@@ -24,7 +24,10 @@ public class Task {
 	private Category category; // カテゴリー
 
 	private String title;
-	private LocalDate closing_date;
+
+	@Column(name = "closingDate")
+	private LocalDate closingDate;
+
 	private Integer progress;
 	private Integer importance; //
 	private String memo;
@@ -32,12 +35,12 @@ public class Task {
 	public Task() {
 	}
 
-	public Task(Integer userId, Category category, String title, LocalDate closing_date,
+	public Task(Integer userId, Category category, String title, LocalDate closingDate,
 			Integer progress, Integer importance, String memo) {
 		this.userId = userId;
 		this.category = category;
 		this.title = title;
-		this.closing_date = closing_date;
+		this.closingDate = closingDate;
 		this.progress = progress;
 		this.importance = importance;
 		this.memo = memo;
@@ -76,12 +79,12 @@ public class Task {
 		this.title = title;
 	}
 
-	public LocalDate getClosing_date() {
-		return closing_date;
+	public LocalDate getClosingDate() {
+		return closingDate;
 	}
 
-	public void setClosing_date(LocalDate closing_date) {
-		this.closing_date = closing_date;
+	public void setClosingDate(LocalDate closingDate) {
+		this.closingDate = closingDate;
 	}
 
 	public Integer getProgress() {
@@ -92,14 +95,6 @@ public class Task {
 		this.progress = progress;
 	}
 
-	public String getMemo() {
-		return memo;
-	}
-
-	public void setMemo(String memo) {
-		this.memo = memo;
-	}
-
 	public Integer getImportance() {
 		return importance;
 	}
@@ -108,4 +103,11 @@ public class Task {
 		this.importance = importance;
 	}
 
+	public String getMemo() {
+		return memo;
+	}
+
+	public void setMemo(String memo) {
+		this.memo = memo;
+	}
 }

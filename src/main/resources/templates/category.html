@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>カテゴリー一覧</title>
+</head>
+
+<body>
+	<h1>カテゴリー一覧</h1>
+	<tr>
+		<th>ID</th>
+		<th>カテゴリー名</th>
+<!--		<th></th>-->
+<!--		<th></th>-->
+	</tr>
+	<tr th:each="category:${categories}">
+		<td th:text="${category.id}"></td>
+		<td th:text="${category.name}"></td>
+<!--		<td>-->
+<!--			<form th:action="'/admin/categories/'+${category.id}+'/edit'" method="get">-->
+<!--				<input type="submit" value="更新">-->
+<!--			</form>-->
+<!--		</td>-->
+<!--		<td>-->
+<!--			<form th:action="'/admin/categories/'+${category.id}+'/delete'" method="post">-->
+<!--				<input type="submit" value="削除">-->
+<!--			</form>-->
+<!--		</td>-->
+	</tr>
+	</table>
+
+	<a href="/admin/categories/add">新規登録</a><br>
+	<a href="/admin/items">商品管理</a>
+</body>
+
+</html>

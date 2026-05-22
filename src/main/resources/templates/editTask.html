@@ -28,7 +28,7 @@
 						<option th:each="category:${categories}" th:value="${category.id}" th:text="${category.name}"
 							th:selected="${category.id == task.category.id}"></option>
 					</select></td>
-				<td><input type="date" name="closing_date" th:value="${task.closing_date}"></td>
+				<td><input type="date" name="closingDate" th:value="${task.closingDate}"></td>
 				<td> <select name="progress" th:field="${task.progress}">
 						<option th:value="0">未着手</option>
 						<option th:value="1">進行中</option>

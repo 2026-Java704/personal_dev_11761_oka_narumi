@@ -35,7 +35,7 @@
 			<td th:text="${task.id}"></td>
 			<td th:text="${task.title}"></td>
 			<td th:text="${task.category.name}"></td>
-			<td th:text="${task.closing_date}"></td>
+			<td th:text="${task.closingDate}"></td>
 			<td>
 				<span th:if="${task.progress==0}">未着手</span>
 				<span th:if="${task.progress==1}">進行中</span>
@@ -60,7 +60,8 @@
 		</tr>
 	</table>
 	<br>
-	<a href="/tasks/new">新規作成</a>
+	<a href="/tasks/new">タスク新規作成</a><br>
+	<a href="/categories/add">カテゴリー新規作成</a>
 
 </body>
 

@@ -81,7 +81,7 @@ public class TaskController {
 	public String add(
 			@RequestParam(required = false) Integer categoryId,
 			@RequestParam(defaultValue = "") String title,
-			@RequestParam(defaultValue = "") LocalDate closing_date,
+			@RequestParam(defaultValue = "") LocalDate closingDate,
 			@RequestParam(defaultValue = "") Integer progress,
 			@RequestParam(defaultValue = "") Integer importance,
 			@RequestParam(defaultValue = "") String memo,
@@ -99,7 +99,7 @@ public class TaskController {
 			errorList.add("タイトルを入力してください");
 		}
 		//　パスワードが空の場合にエラーとする
-		if (closing_date == null) {
+		if (closingDate == null) {
 			errorList.add("期限を入力してください");
 		}
 
@@ -107,14 +107,14 @@ public class TaskController {
 		if (errorList.size() > 0) {
 			model.addAttribute("errorList", errorList);
 			model.addAttribute("title", title);
-			model.addAttribute("closing_date", closing_date);
+			model.addAttribute("closingDate", closingDate);
 			return "addTask";
 		}
 
 		Category category = categoryRepository.findById(categoryId).get();
 
 		//Taskオブジェクトの生成
-		Task task = new Task(account.getId(), category, title, closing_date, progress, importance, memo);
+		Task task = new Task(account.getId(), category, title, closingDate, progress, importance, memo);
 		//tasksテーブルへの反映（INSERT）
 		taskRepository.save(task);
 		//
@@ -147,7 +147,7 @@ public class TaskController {
 			@PathVariable Integer id,
 			@RequestParam(required = false) Integer categoryId,
 			@RequestParam(defaultValue = "") String title,
-			@RequestParam(defaultValue = "") LocalDate closing_date,
+			@RequestParam(defaultValue = "") LocalDate closingDate,
 			@RequestParam(defaultValue = "") Integer progress,
 
 			@RequestParam(defaultValue = "") Integer importance,
@@ -168,7 +168,7 @@ public class TaskController {
 
 		task.setCategory(category);
 		task.setTitle(title);
-		task.setClosing_date(closing_date);
+		task.setClosingDate(closingDate);
 		task.setProgress(progress);
 		task.setImportance(importance);
 		task.setMemo(memo);
@@ -200,4 +200,38 @@ public class TaskController {
 
 	}
 
+	//カテゴリー新規作成
+	@GetMapping("/categories/add")
+	public String addCategory() {
+
+		if (account.getId() == null) {
+			return "redirect:/login";
+		}
+
+		// addCategory.htmlを出力
+		return "addCategory";
+	}
+
+	// カテゴリー新規登録処理
+	@PostMapping("/categories/add")
+	public String store(
+			@RequestParam(defaultValue = "") Integer categoryId,
+			@RequestParam(defaultValue = "") String name,
+			Model model) {
+
+		Category category = new Category(categoryId, name);
+
+		// テーブルへの反映（INSERT）
+		categoryRepository.save(category);
+		return "redirect:/tasks";
+	}
+
+	// 削除処理
+	@PostMapping("/{id}/delete")
+	public String delete(@PathVariable Integer id, Model model) {
+
+		// テーブルから削除（DELETE）
+		categoryRepository.deleteById(id);
+		return "redirect:/tasks";
+	}
 }

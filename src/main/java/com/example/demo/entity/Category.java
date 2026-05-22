@@ -15,6 +15,14 @@ public class Category {
 
 	private String name; // カテゴリー名
 
+	public Category() {
+	}
+
+	public Category(Integer id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+
 	// ゲッター
 	public Integer getId() {
 		return id;
@@ -23,4 +31,9 @@ public class Category {
 	public String getName() {
 		return name;
 	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 }
