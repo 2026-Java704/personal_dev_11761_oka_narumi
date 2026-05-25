@@ -1,15 +1,255 @@
-/* 全体 */
-body {
-	background-color: #EFF0F7; /* 背景色  */
-	text-align: center; /* 中央寄せ */
-    min-width: 900px; /* 最小幅 */
+body{
+	background-color: #e8e8e8;
+	text-align: center;
 }
+
+/* From Uiverse.io by bociKond */ 
+.form {
+  --bg-light: #efefef;
+  --bg-dark: #707070;
+  --clr: #58bc82;
+  --clr-alpha: #9c9c9c60;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto; /* できた！水平方向に真ん中 */
+}
+
+.form .input-span {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form input[type="email"],
+.form input[type="password"] {
+  border-radius: 0.5rem;
+  padding: 1rem 0.75rem;
+  width: 100%;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--clr-alpha);
+  outline: 2px solid var(--bg-dark);
+}
+
+.form input[type="email"]:focus,
+.form input[type="password"]:focus {
+  outline: 2px solid var(--clr);
+}
+
+.label {
+  align-self: flex-start;
+  color: var(--clr);
+  font-weight: 600;
+}
+
+.form .submit {
+  padding: 1rem 0.75rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 3rem;
+  background-color: var(--bg-dark);
+  color: var(--bg-light);
+  border: none;
+  cursor: pointer;
+  transition: all 300ms;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.form .submit:hover {
+  background-color: var(--clr);
+  color: var(--bg-dark);
+}
+
+.span {
+  text-decoration: none;
+  color: var(--bg-dark);
+}
+
+.span a {
+  color: var(--clr);
+}
+
+/* 外部サイトから */ 
+table{
+  width: 50%;
+  border-collapse:separate;
+  border-spacing: 0;
+  margin: 0 auto; /* 水平方向に中央寄せ */
+  margin-bottom: 10px;  /* 外側余白（下） */
+}
+
+table th:first-child{
+  border-radius: 5px 0 0 0;
+}
+
+table th:last-child{
+  border-radius: 0 5px 0 0;
+  border-right: 1px solid #58bc82;
+}
+
+table th{
+  text-align: center;
+  color:white;
+  background: linear-gradient(#58bc82);
+  border-left: 1px solid #58bc82;
+  border-top: 1px solid #58bc82;
+  border-bottom: 1px solid #58bc82;
+  box-shadow: 0px 1px 1px rgba(255,255,255,0.3) inset;
+/*  width: 25%;*/
+  padding: 10px 0;
+}
+
+table td{
+  text-align: center;
+  border-left: 1px solid #a8b7c5;
+  border-bottom: 1px solid #a8b7c5;
+  border-top:none;
+  box-shadow: 0px -3px 5px 1px #eee inset;
+/*  width: 25%;*/
+  padding: 10px 0;
+}
+
+table td:last-child{
+  border-right: 1px solid #a8b7c5;
+}
+
+table tr:last-child td:first-child {
+  border-radius: 0 0 0 5px;
+}
+
+table tr:last-child td:last-child {
+  border-radius: 0 0 5px 0;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center; /* 横方向の中央 */
+}
+
+.btn-search{
+	padding: 5px 12px;
+	 width: 100%;
+	 display: flex;
+	 align-items: center;
+	 justify-content: center;
+	 gap: 0.5rem;
+	 border-radius: 3rem;
+	 background-color: var(--bg-dark);
+	 color: var(--bg-light);
+	 border: none;
+	 cursor: pointer;
+	 transition: all 300ms;
+	 font-weight: bold;
+	 font-size: 0.9rem;
+}
+
+.btn-new{
+	padding: 5px 12px;
+	 width: 10%;
+	 display: flex;
+	 align-items: center;
+	 justify-content: center;
+	 gap: 0.5rem;
+	 border-radius: 3rem;
+	 background-color: #707070;
+	 color: #efefef;
+	 border: none;
+	 cursor: pointer;
+	 transition: all 300ms;
+	 font-weight: bold;
+	 font-size: 0.9rem;
+	 
+}
+
+.btn-edit-delete{
+	padding: 5px 12px;
+	 width: 100%;
+	 display: flex;
+	 align-items: center;
+	 justify-content: center;
+	 gap: 0.5rem;
+	 border-radius: 3rem;
+	 background-color: #707070;
+	 color: #efefef;
+	 border: none;
+	 cursor: pointer;
+	 transition: all 300ms;
+	 font-weight: bold;
+	 font-size: 0.9rem;
+	 
+}
+
+
+.importance-1{
+	padding: 5px 12px;
+		 width: 20%;
+		 display: flex;
+		 align-items: center;
+		 justify-content: center;
+		 gap: 0.5rem;
+		 border-radius: 3rem;
+		 background-color: red;
+		 color: var(--bg-light);
+		 border: none;
+		 cursor: pointer;
+		 transition: all 300ms;
+		 font-weight: bold;
+		 font-size: 0.9rem;
+}
+
+.importance-2{
+	padding: 5px 12px;
+		 width: 20%;
+		 display: flex;
+		 align-items: center;
+		 justify-content: center;
+		 gap: 0.5rem;
+		 border-radius: 3rem;
+		 background-color: #58bc82;
+		 color: var(--bg-light);
+		 border: none;
+		 cursor: pointer;
+		 transition: all 300ms;
+		 font-weight: bold;
+		 font-size: 0.9rem;
+}
+
+.importance-3{
+	padding: 5px 12px;
+		 width: 20%;
+		 display: flex;
+		 align-items: center;
+		 justify-content: center;
+		 gap: 0.5rem;
+		 border-radius: 3rem;
+		 background-color: #9c9c9c60;
+		 color: var(--bg-light);
+		 border: none;
+		 cursor: pointer;
+		 transition: all 300ms;
+		 font-weight: bold;
+		 font-size: 0.9rem;
+}
+
+/* サンプル */
 /* ヘッダー、ナビゲーションメニュー、フッター */
 header, nav, footer {
-	background-color: #45496a; /* 背景色 */
+	background-color: #707070; /* 背景色 */
 	color: #ffffff; /* 文字色 */
 	padding-top: 5px; /* 内側余白(上) */
-	padding-bottom: 5px; /* 内側余白(下) */
+	padding-bottom: 15px; /* 内側余白(下) */
+	padding-left: 15px;
+	margin-bottom: 30px;  /* 外側余白（下） */
 }
 /* ヘッダー、ナビゲーション内リンク */
 header a, nav a {
@@ -21,48 +261,24 @@ header h1 {
 	margin: 10px auto;
 }
 
-/* 仕切り線 */
-hr {
-	border-top: 2px dashed #7d8bae;
-}
-/* メイン */
-main {
-	background-color: #FFFFFF;
-	min-height: 50px;
-	padding: 20px;
-}
-/* 表線 */
-table, th, td {
-	border-collapse: collapse;
-	border: 1px solid #7d8bae;
-}
-/* 表 */
-table {
-    margin: 5px auto;
-    min-width: 800px;
-}
-/* 表見出しセル */
-table th {
-	background: #7d8bae;
-	color: #ffffff;
-}
-/* 送信ボタン */
-button {
-	margin: 2px;
-	padding: 5px 20px;
-	background-color: #e5857b;
-	color: #ffffff;
-	border: none;
-	width:100px;
-	cursor: pointer;
-}
-/* 送信ボタン(マウスオーバー時) */
-button:hover {
-	background-color: #f1b2b2;
-}
-/* エラーメッセージ */
-ul.error {
-	color: red;
-	list-style: none;
-	padding-left: 0;
-}
+
+/* ヘッダー　外部サイト */
+/*.header02 {*/
+/*    padding: 16px 24px;*/
+/*    background-color: #333;*/
+/*    color: #fff;*/
+/*}*/
+
+/*.header02-logo {*/
+/*    text-align: center;*/
+/*    font-weight: bold;*/
+/*    font-size: 20px;*/
+/*}*/
+
+/*.header02-list {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    gap: 32px;*/
+/*    font-weight: bold;*/
+/*    margin-top: 24px;*/
+/*}*/

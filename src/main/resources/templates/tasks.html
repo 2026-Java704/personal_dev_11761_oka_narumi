@@ -5,19 +5,26 @@
 	<meta charset="UTF-8">
 	<title>ToDoアプリ</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link  rel="icon" href="../static/icons/checkIcon.png">
 </head>
 
 <body>
 	<header th:replace="~{header}"></header>
 
-	<form action="/tasks" method="get">
-		タイトル<input type="text" name="keyword" th:value="${keyword}">
-		<button>検索</button>
+	<form class="form" action="/tasks" method="get">
+		<div class="input-span">
+		<input type="text" name="keyword" placeholder="タイトル名" th:value="${keyword}">
+		</div>
+		<div>
+		<button class="btn-search">検索</button>
+		</div>
 	</form>
 
+	<a href="/tasks?sort=closingDateAsc">日付順</a>
 	<a href="/tasks">全タスク</a>
 	<a th:each="c:${categories}" th:href="'/tasks?categoryId='+${c.id}">
 		<span th:text="${c.name}" style="padding-left: 10px;"></span>
+	
 	</a>
 	<table border="1">
 		<tr>
@@ -42,19 +49,23 @@
 				<span th:if="${task.progress==2}">完了</span>
 			</td>	
 			<td>
-				<span th:if="${task.importance==0}">高</span>
-				<span th:if="${task.importance==1}">中</span>
-				<span th:if="${task.importance==2}">低</span>
+				<span class="importance-1" th:if="${task.importance==0}">高</span>
+				<span class="importance-2" th:if="${task.importance==1}">中</span>
+				<span class="importance-3" th:if="${task.importance==2}">低</span>
 			</td>
 			<td th:text="${task.memo}"></td>
 			<td>
 				<form th:action="@{/tasks/{taskId}/edit(taskId=${task.id})}" method="get">
-					<button>更新</button>
+					<div class="btn-container">
+					<button class="btn-edit-delete">更新</button>
+					</div>
 				</form>
 			</td>
 			<td>
 				<form th:action="@{/tasks/{taskId}/delete(taskId=${task.id})}" method="post">
-					<button type="submit" onclick="return confirm('本当に削除しますか？');">削除</button>
+					<div class="btn-container">
+					<button class="btn-edit-delete" type="submit" onclick="return confirm('本当に削除しますか？');">削除</button>
+					</div>
 				</form>
 			</td>
 		</tr>

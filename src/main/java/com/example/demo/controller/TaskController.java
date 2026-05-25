@@ -38,6 +38,7 @@ public class TaskController {
 			@RequestParam(required = false) Integer categoryId,
 			@RequestParam(defaultValue = "") String title,
 			@RequestParam(defaultValue = "") String keyword,
+			@RequestParam(defaultValue = "") String sort,
 
 			Model model) {
 
@@ -55,9 +56,12 @@ public class TaskController {
 			taskList = taskRepository.findByUserIdAndCategoryId(account.getId(), categoryId);
 		} else if (keyword.length() > 0) {
 			taskList = taskRepository.findByUserIdAndTitleContaining(account.getId(), keyword);
+		} else if ("closingDateAsc".equals(sort)) {
+			taskList = taskRepository.findByUserIdOrderByClosingDateAsc(account.getId());
 		} else {
 			taskList = taskRepository.findByUserId(account.getId());
 		}
+
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("tasks", taskList);
 
@@ -66,11 +70,15 @@ public class TaskController {
 
 	// 新規タスク画面の表示
 	@GetMapping("/tasks/new")
-	public String add() {
+	public String add(Model model) {
 
 		if (account.getId() == null) {
 			return "redirect:/login";
 		}
+
+		List<Category> categoryList = categoryRepository.findAll();
+
+		model.addAttribute("categories", categoryList);
 
 		// addTask.htmlを出力
 		return "addTask";
@@ -225,6 +233,37 @@ public class TaskController {
 		categoryRepository.save(category);
 		return "redirect:/tasks";
 	}
+
+	//	// 更新画面表示
+	//	@GetMapping("/categories/{id}/edit")
+	//	public String editCategory(
+	//			@PathVariable Integer id,
+	//			Model model) {
+	//
+	//		// テーブルをID（主キー）で検索
+	//		Category category = categoryRepository.findById(id).get();
+	//		model.addAttribute("category", category);
+	//
+	//		return "editCategory";
+	//	}
+	//
+	//	// 更新処理
+	//	@PostMapping("/categories/{id}/edit")
+	//	public String update(
+	//			@PathVariable Integer id,
+	//			@RequestParam(defaultValue = "") String name,
+	//			Model model) {
+	//
+	//		// テーブルをID（主キー）で検索
+	//		Category category = categoryRepository.findById(id).get();
+	//
+	//		// セッターを利用して、categoryオブジェクトのフィールドを書き換える
+	//		category.setName(name);
+	//
+	//		// itemsテーブルへの反映（UPDATE）
+	//		categoryRepository.save(category);
+	//		return "redirect:/categories";
+	//	}
 
 	// 削除処理
 	@PostMapping("/categories/{id}/delete")

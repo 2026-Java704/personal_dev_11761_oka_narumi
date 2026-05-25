@@ -8,6 +8,7 @@
 </head>
 
 <body>
+	<header th:replace="~{header}"></header>
 	<form th:action="@{/tasks/{taskId}/edit(taskId=${task.id})}" method="post">
 		<table border="1">
 			<tr>
@@ -46,8 +47,9 @@
 				</td>
 			</tr>
 		</table>
-
-		<button>更新</button>
+		<div class="btn-container">
+		<button class="btn-new">更新</button>
+		</div>
 	</form>
 </body>
 

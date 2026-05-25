@@ -18,4 +18,6 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
 	List<Task> findByUserIdAndCategoryId(Integer userId, Integer categoryId);
 
 	List<Task> findByUserIdAndTitleContaining(Integer userId, String keyword);
+
+	List<Task> findByUserIdOrderByClosingDateAsc(Integer userId);
 }

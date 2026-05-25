@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>カテゴリ更新</title>
+</head>
+
+<body>
+	
+	<h1>カテゴリー更新</h1>
+	
+	<form th:action="'/categories/'+${item.id}+'/edit'" method="post">
+		<table border="1">
+			
+			<table border="1">
+				<tr>
+					<th>カテゴリID</th>
+					<td  th:text="${category.id}"></td>
+				</tr>
+				<tr>
+					<th>カテゴリ名</th>
+					<td th:text="${category.name}"></td>
+			</table>
+			
+<!--			<tr>-->
+<!--				<th>カテゴリID</th>-->
+<!--				<td th:text="${item.id}"></td>-->
+<!--			</tr>-->
+<!--			<tr>-->
+<!--				<th>カテゴリーID</th>-->
+<!--				<td>-->
+<!--					<select name="categoryId">-->
+<!--						<option th:each="category:${categories}" th:value="${category.id}" th:text="${category.name}"-->
+<!--							th:selected="${category.id == item.categoryId}"></option>-->
+<!--					</select>-->
+<!--				</td>-->
+<!--			</tr>-->
+<!--			<tr>-->
+<!--				<th>商品名</th>-->
+<!--				<td>-->
+<!--					<input type="text" name="name" th:value="${item.name}">-->
+<!--				</td>-->
+<!--			</tr>-->
+<!--			<tr>-->
+<!--				<th>値段</th>-->
+<!--				<td>-->
+<!--					<input type="text" name="price" th:value="${item.price}">-->
+<!--				</td>-->
+<!--			</tr>-->
+		</table>
+		<input type="submit" value="更新">
+	</form>
+</body>
+
+</html>

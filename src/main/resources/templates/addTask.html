@@ -8,19 +8,20 @@
 </head>
 
 <body>
+	<header th:replace="~{header}"></header>
 	<div th:each="error:${errorList}">
-					<span th:text="${error}" style="color: red"></span>
-					<br>
-				</div>
+		<span th:text="${error}" style="color: red"></span>
+		<br>
+	</div>
 	<form action="/tasks/add" method="post">
 		<table border="1">
 			<tr>
 				<th>カテゴリー</th>
 				<td>
 					<select name="categoryId">
-						<option th:value="1">運動</option>
-						<option th:value="2">勉強</option>
-						<option th:value="3">その他</option>
+						<option th:each="category:${categories}"
+						th:value="${category.id}" th:text="${category.name}"></option>
+
 					</select>
 				</td>
 			</tr>
@@ -42,7 +43,6 @@
 					<select name="progress">
 						<option th:value="0">未着手</option>
 						<option th:value="1">進行中</option>
-						<option th:value="2">完了</option>
 					</select>
 				</td>
 			</tr>
@@ -64,7 +64,9 @@
 				</td>
 			</tr>
 		</table>
-		<button>登録</button>
+		<div class="btn-container">
+		<button class="btn-new">登録</button>
+		</div>
 	</form>
 </body>
 

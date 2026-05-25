@@ -12,14 +12,14 @@
 	<tr>
 		<th>ID</th>
 		<th>カテゴリー名</th>
+<!--		<th>更新</th>-->
 		<th>削除</th>
-<!--		<th></th>-->
 	</tr>
 	<tr th:each="category:${categories}">
 		<td th:text="${category.id}"></td>
 		<td th:text="${category.name}"></td>
 <!--		<td>-->
-<!--			<form th:action="'/admin/categories/'+${category.id}+'/edit'" method="get">-->
+<!--			<form th:action="'categories/'+${category.id}+'/edit'" method="get">-->
 <!--				<input type="submit" value="更新">-->
 <!--			</form>-->
 <!--		</td>-->
