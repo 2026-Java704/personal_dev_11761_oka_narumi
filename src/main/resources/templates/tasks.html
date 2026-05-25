@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<title>ToDoアプリ</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link  rel="icon" href="../static/icons/checkIcon.png">
+	<link rel="icon" href="/icons/checkIcon.png">
 </head>
 
 <body>
@@ -19,9 +19,15 @@
 		<button class="btn-search">検索</button>
 		</div>
 	</form>
-
-	<a href="/tasks?sort=closingDateAsc">日付順</a>
-	<a href="/tasks">全タスク</a>
+<!--	<div>-->
+<!--	<a href="/tasks?sort=closingDateAsc" >-->
+<!--		<button class="btn-new" type="button">日付順</button>-->
+<!--	</a>-->
+<!--	</div>-->
+	
+	<div class="btn-container">
+	<a href="/tasks"><button class="btn-new" type="button">全タスク</a>
+	</div>
 	<a th:each="c:${categories}" th:href="'/tasks?categoryId='+${c.id}">
 		<span th:text="${c.name}" style="padding-left: 10px;"></span>
 	
@@ -71,9 +77,13 @@
 		</tr>
 	</table>
 	<br>
-	<a href="/tasks/new">タスク新規作成</a><br>
-	<a href="/categories/add">カテゴリー新規作成</a>
-
+	<div class="btn-container">
+	<a href="/tasks/new"><button class="btn-new" type="button">taskを追加</button></a>
+	</div>
+	<div class="btn-container">
+	<a href="/categories/add"><button class="btn-new" type="button">カテゴリを追加</button></a>
+	</div>
+	<footer th:replace="~{footer}"></footer>
 </body>
 
 </html>

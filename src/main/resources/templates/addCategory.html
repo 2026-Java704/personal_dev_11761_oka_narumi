@@ -5,10 +5,11 @@
 	<meta charset="UTF-8">
 	<title>カテゴリー登録</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link rel="icon" href="/icons/checkIcon.png">
 </head>
 
 <body>
-
+	<header th:replace="~{header}"></header>
 	<h1>カテゴリー登録</h1>
 
 	<form action="/categories/add" method="post">
@@ -26,6 +27,7 @@
 		<input type="submit" value="カテゴリー一覧へ">
 	</form>
 	<a href="/tasks">タスク一覧へ戻る</a><br>
+	<footer th:replace="footer"></footer>
 </body>
 
 </html>

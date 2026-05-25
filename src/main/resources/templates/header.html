@@ -1,5 +1,8 @@
 <header>
-	<h1><a href="/tasks">ToDoリスト</a></h1>
+	<h1 id="font"><a href="/tasks">To-Do</a></h1>
 	[[${@account.name}]]さんがログイン中
 	<a href="/logout"  type="submit" onclick="return confirm('本当にログアウトしますか？');">ログアウト</a>
+	<div class="divDate">
+		<a href="/tasks?sort=closingDateAsc" class="btn btn-border"><span>日付順</span></a>
+		</div>
 </header>

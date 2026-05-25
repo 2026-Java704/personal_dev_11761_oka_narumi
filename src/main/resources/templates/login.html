@@ -6,6 +6,7 @@
 	<title>ログイン</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
 	<link  rel="icon" href="../static/icons/checkIcon.png">
+	<link rel="icon" href="/icons/checkIcon.png">
 </head>
 
 <body>
@@ -29,12 +30,13 @@
 			<button class="submit">ログイン</button>
 			<br> <span th:text="${message}" style="color: red"></span>
 			<br>
-					<div class="span"></div>
-					<a href="/users/new">ユーザー新規登録</a>
+					<div class="span">
+					<a href="/users/new"><button class="btn-new" type="button">新しいアカウントを作成</button></a>
 					</div>
 		</form>
 		
 	</main>
+	<footer th:replace="~{footer}"></footer>
 </body>
 
 </html>
