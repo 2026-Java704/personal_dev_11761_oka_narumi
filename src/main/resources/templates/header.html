@@ -5,4 +5,13 @@
 	<div class="divDate">
 		<a href="/tasks?sort=closingDateAsc" class="btn btn-border"><span>日付順</span></a>
 		</div>
+		<div class="btn-container">
+			<a href="/tasks"><button class="btn-new" type="button">全タスク</a>
+			</div>
+		<div class="btn-container">
+			<a class="btn-new" th:each="c:${categories}" th:href="'/tasks?categoryId='+${c.id}">
+				<span th:text="${c.name}" style="padding-left: 10px;"></span>
+				</div>
+			
+			</a>
 </header>

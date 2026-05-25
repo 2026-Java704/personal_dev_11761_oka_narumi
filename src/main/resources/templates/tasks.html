@@ -19,19 +19,6 @@
 		<button class="btn-search">検索</button>
 		</div>
 	</form>
-<!--	<div>-->
-<!--	<a href="/tasks?sort=closingDateAsc" >-->
-<!--		<button class="btn-new" type="button">日付順</button>-->
-<!--	</a>-->
-<!--	</div>-->
-	
-	<div class="btn-container">
-	<a href="/tasks"><button class="btn-new" type="button">全タスク</a>
-	</div>
-	<a th:each="c:${categories}" th:href="'/tasks?categoryId='+${c.id}">
-		<span th:text="${c.name}" style="padding-left: 10px;"></span>
-	
-	</a>
 	<table border="1">
 		<tr>
 			<th>NO</th>

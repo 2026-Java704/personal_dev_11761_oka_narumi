@@ -309,6 +309,15 @@ header h1 {
 	margin: 10px auto;
 }
 
+header h1 a{
+	display: block;
+	    width: 64px;
+	    height: 60px;
+	    font-size: 0;
+	    background: url(/icons/checkIcon.png)
+		left top/64px auto no-repeat;
+}
+
 /* 日付順ボタン */
 
 .divDate {
