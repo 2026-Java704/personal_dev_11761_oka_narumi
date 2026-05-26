@@ -14,44 +14,61 @@
 	<header th:replace="~{header}"></header>
 
 	<main class="main-container">
+		
+		<a th:href="@{/tasks(sort='closingDateAsc')}" class="btn-link-text">
+			期限日が近い順
+		</a>
+		<br>								
 		<form class="search-form" action="/tasks" method="get">
+			
 			<div class="form-group">
 				<label>タイトル</label>
 				<input type="text" name="keyword" th:value="${keyword}">
 			</div>
 
 			<div class="form-group">
-				<label>並び替え</label>
-				<select name="sort" onchange="location.href=this.value;">
-					<option value="/tasks?sort=closingDateAsc">期限が近い順</option>
-				</select>
+				<input type="hidden" name="closingDate">
+				<button class="btn-search" type="submit">検索</button>
 			</div>
+		</form>
+		<form class="search-form" action="/tasks" method="get">
+			<div class="form-group">
+			<label>重要度</label>
+			</div>
+			<select name="importance">
+				<option value="0">高</option>
+				<option value="1">中</option>
+				<option value="2">低</option>
+			</select>
 
-			<button class="btn-search" type="submit">検索</button>
+			
+		
+
+		<button class="btn-search" type="submit">検索</button>
 		</form>
 
-<!--		<p class="section-title">-->
-<!--			<a href="/tasks" style="color: #ffffff; text-decoration: none;">全タスク</a>-->
-<!--		</p>-->
-<!--<div class="category-filter-list">-->
-<!--			<a href="/tasks"><button class="btn-new" type="button">全タスク</a>-->
-<!--			</div>-->
+		<!--		<p class="section-title">-->
+		<!--			<a href="/tasks" style="color: #ffffff; text-decoration: none;">全タスク</a>-->
+		<!--		</p>-->
+		<!--<div class="category-filter-list">-->
+		<!--			<a href="/tasks"><button class="btn-new" type="button">全タスク</a>-->
+		<!--			</div>-->
 
-<div class="category-filter-list"
-	style="margin-top: 15px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-	<a class="category-badge" href="/tasks">全タスク</a>
-				
-	<a class="category-badge" th:each="c:${categories}" th:href="'/tasks?categoryId='+${c.id}">
-		<span th:text="${c.name}"></span>
-	</a>
-</div>
+		<div class="category-filter-list"
+			style="margin-top: 15px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+			<a class="category-badge" href="/tasks">すべて</a>
+
+			<a class="category-badge" th:each="c:${categories}" th:href="'/tasks?categoryId='+${c.id}">
+				<span th:text="${c.name}"></span>
+			</a>
+		</div>
 
 
 		<div class="table-card">
 			<table class="task-table">
 				<thead>
 					<tr>
-						<th>NO</th>
+						<!--						<th>NO</th>-->
 						<th>タイトル</th>
 						<th>カテゴリー</th>
 						<th>期限</th>
@@ -62,49 +79,49 @@
 						<th>削除</th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr th:each="task:${tasks}">
-						<td th:text="${task.id}"></td>
-						<td th:text="${task.title}"></td>
-						<td th:text="${task.category.name}"></td>
-						<td th:text="${task.closingDate}"></td>
-						<td>
-							<span th:if="${task.progress==0}">未着手</span>
-							<span th:if="${task.progress==1}">進行中</span>
-							<span th:if="${task.progress==2}">完了</span>
-						</td>
-						<td>
-							<span class="importance-1" th:if="${task.importance==0}">高</span>
-							<span class="importance-2" th:if="${task.importance==1}">中</span>
-							<span class="importance-3" th:if="${task.importance==2}">低</span>
-						</td>
-						<td th:text="${task.memo}"></td>
-						<td>
-							<form th:action="@{/tasks/{taskId}/edit(taskId=${task.id})}" method="get">
-								<button class="btn-edit-delete">更新</button>
-							</form>
-						</td>
-						<td>
-							<form th:action="@{/tasks/{taskId}/delete(taskId=${task.id})}" method="post">
-								<button class="btn-edit-delete" type="submit"
-									onclick="return confirm('本当に削除しますか？');">削除</button>
-							</form>
-						</td>
-					</tr>
-				</tbody>
+
+				<tr th:each="task:${tasks}">
+					<!--						<td th:text="${task.id}"></td>-->
+					<td th:text="${task.title}"></td>
+					<td th:text="${task.category.name}"></td>
+					<td th:text="${task.closingDate}"></td>
+					<td>
+						<span th:if="${task.progress==0}">未着手</span>
+						<span th:if="${task.progress==1}">進行中</span>
+						<span th:if="${task.progress==2}">完了</span>
+					</td>
+					<td>
+						<span class="importance-1" th:if="${task.importance==0}">高</span>
+						<span class="importance-2" th:if="${task.importance==1}">中</span>
+						<span class="importance-3" th:if="${task.importance==2}">低</span>
+					</td>
+					<td th:text="${task.memo}"></td>
+					<td>
+						<form th:action="@{/tasks/{taskId}/edit(taskId=${task.id})}" method="get">
+							<button class="btn-edit-delete">更新</button>
+						</form>
+					</td>
+					<td>
+						<form th:action="@{/tasks/{taskId}/delete(taskId=${task.id})}" method="post">
+							<button class="btn-edit-delete" type="submit"
+								onclick="return confirm('本当に削除しますか？');">削除</button>
+						</form>
+					</td>
+				</tr>
+
 			</table>
 		</div>
 
 		<div class="bottom-links">
-			<a href="/tasks/new" class="btn-link-text">タスク新規作成</a>
-			<a href="/categories/add" class="btn-link-text">カテゴリー新規作成</a>
+			<a href="/tasks/new" class="btn-link-text">タスク追加</a>
+			<a href="/categories/add" class="btn-link-text">カテゴリー追加</a>
 
-<!--			<div class="category-filter-list"-->
-<!--				style="margin-top: 15px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">-->
-<!--				<a class="category-badge" th:each="c:${categories}" th:href="'/tasks?categoryId='+${c.id}">-->
-<!--					<span th:text="${c.name}"></span>-->
-<!--				</a>-->
-<!--			</div>-->
+			<!--			<div class="category-filter-list"-->
+			<!--				style="margin-top: 15px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">-->
+			<!--				<a class="category-badge" th:each="c:${categories}" th:href="'/tasks?categoryId='+${c.id}">-->
+			<!--					<span th:text="${c.name}"></span>-->
+			<!--				</a>-->
+			<!--			</div>-->
 		</div>
 	</main>
 

@@ -39,7 +39,8 @@ public class TaskController {
 			@RequestParam(defaultValue = "") String title,
 			@RequestParam(defaultValue = "") String keyword,
 			@RequestParam(defaultValue = "") String sort,
-
+			@RequestParam(defaultValue = "") Integer importance,
+			@RequestParam(defaultValue = "") LocalDate closinDate,
 			Model model) {
 
 		if (account.getId() == null) {
@@ -58,6 +59,8 @@ public class TaskController {
 			taskList = taskRepository.findByUserIdAndTitleContaining(account.getId(), keyword);
 		} else if ("closingDateAsc".equals(sort)) {
 			taskList = taskRepository.findByUserIdOrderByClosingDateAsc(account.getId());
+		} else if (importance != null) {
+			taskList = taskRepository.findByUserIdAndImportance(account.getId(), importance);
 		} else {
 			taskList = taskRepository.findByUserId(account.getId());
 		}

@@ -3,56 +3,90 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>タスク変更</title>
+	<title>タスク変更 - ToDoアプリ</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<!--<link rel="stylesheet" type="text/css" href="../static/css/style.css">-->
 	<link rel="icon" href="/icons/checkIcon.png">
 </head>
 
 <body>
 	<header th:replace="~{header}"></header>
-	<form th:action="@{/tasks/{taskId}/edit(taskId=${task.id})}" method="post">
-		<table border="1">
-			<tr>
-				<th>NO</th>
-				<th>タイトル</th>
-				<th>カテゴリー</th>
-				<th>期限</th>
-				<th>進捗状況</th>
-				<th>重要度</th>
-				<th>メモ</th>
-			</tr>
-			<tr>
-				<td th:text="${task.id}"></td>
-				<td>
-					<input type="text" name="title" th:value="${task.title}">
-				</td>
-				<td> <select name="categoryId">
-						<option th:each="category:${categories}" th:value="${category.id}" th:text="${category.name}"
-							th:selected="${category.id == task.category.id}"></option>
-					</select></td>
-				<td><input type="date" name="closingDate" th:value="${task.closingDate}"></td>
-				<td> <select name="progress" th:field="${task.progress}">
-						<option th:value="0">未着手</option>
-						<option th:value="1">進行中</option>
-						<option th:value="2">完了</option>
-					</select></td>
-				<td> <select name="importance" th:field="${task.importance}">
-						<option th:value="0">高</option>
-						<option th:value="1">中</option>
-						<option th:value="2">低</option>
-					</select></td>
 
-				</td>
-				<td>
-					<input type="text" name="memo" th:value="${task.memo}">
-				</td>
-			</tr>
-		</table>
-		<div class="btn-container">
-		<button class="btn-new">更新</button>
+	<main class="main-container">
+
+		<h2 class="section-title" style="color: #ffffff; margin-bottom: 25px;">タスク変更</h2>
+
+		<form th:action="@{/tasks/{taskId}/edit(taskId=${task.id})}" method="post" style="width: 100%;">
+
+			<div class="table-card">
+
+				<table class="edit-table">
+					<thead>
+						<tr>
+							<th>NO</th>
+							<th>タイトル</th>
+							<th>カテゴリー</th>
+							<th>期限</th>
+							<th>進捗状況</th>
+							<th>重要度</th>
+							<th>メモ</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td th:text="${task.id}"></td>
+
+							<td>
+								<input type="text" name="title" th:value="${task.title}">
+							</td>
+
+							<td>
+								<select name="categoryId">
+									<option th:each="category:${categories}" th:value="${category.id}"
+										th:text="${category.name}" th:selected="${category.id == task.category.id}">
+									</option>
+								</select>
+							</td>
+
+							<td>
+								<input type="date" name="closingDate" th:value="${task.closingDate}">
+							</td>
+
+							<td>
+								<select name="progress" th:field="${task.progress}">
+									<option th:value="0">未着手</option>
+									<option th:value="1">進行中</option>
+									<option th:value="2">完了</option>
+								</select>
+							</td>
+
+							<td>
+								<select name="importance" th:field="${task.importance}">
+									<option th:value="0">高</option>
+									<option th:value="1">中</option>
+									<option th:value="2">低</option>
+								</select>
+							</td>
+
+							<td>
+								<input type="text" name="memo" th:value="${task.memo}">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="btn-container" style="margin-top: 25px;">
+				<button class="btn-search" type="submit" style="padding: 0 40px; height: 40px;">更新</button>
+			</div>
+		</form>
+
+		<div class="bottom-links" style="margin-top: 25px;">
+			<a href="/tasks" class="btn-link-text">タスク一覧に戻る</a>
 		</div>
-	</form>
-	<footer th:replace="footer"></footer>
+	</main>
+
+	<footer th:replace="~{footer}"></footer>
 </body>
 
 </html>
