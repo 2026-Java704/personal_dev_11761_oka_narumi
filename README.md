@@ -428,55 +428,7 @@ history.html に渡す
 
 ---
 
-## 14. セットアップ手順
-
-### 14-1. PostgreSQL でDBを作成する
-
-```sql
-CREATE DATABASE personal_dev_11761_oka_narumi OWNER postgres ENCODING 'UTF8';
-```
-
-### 14-2. 接続設定を確認する
-
-`src/main/resources/application.properties`
-
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/personal_dev_11761_oka_narumi
-spring.datasource.username=postgres
-spring.datasource.password=0001
-```
-
-### 14-3. アプリを起動する
-
-```bash
-./gradlew bootRun
-```
-
-### 14-4. ポート8080が使用中の場合
-
-他のアプリが 8080 を使っている場合は、次のように 8081 で起動できます。
-
-```bash
-./gradlew bootRun --args='--server.port=8081'
-```
-
-### 14-5. ブラウザで確認する
-
-通常:
-
-```text
-http://localhost:8080/login
-```
-
-8081 で起動した場合:
-
-```text
-http://localhost:8081/login
-```
-
----
-
-## 15. 岡さん向けポイント
+## 14. 岡さん向けポイント
 
 今回の修正で特に見てほしいポイントは次の5つです。
 
@@ -488,7 +440,7 @@ http://localhost:8081/login
 
 ---
 
-## 16. 今回の修正まとめ
+## 15. 今回の修正まとめ
 
 今回の追加・修正は、岡さん向けに次の方針で実装しています。
 
