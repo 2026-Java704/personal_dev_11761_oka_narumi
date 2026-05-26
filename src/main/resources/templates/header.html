@@ -1,17 +1,13 @@
 <header>
-	<h1 id="font"><a href="/tasks">To-Do</a></h1>
-	[[${@account.name}]]さんがログイン中
-	<a href="/logout"  type="submit" onclick="return confirm('本当にログアウトしますか？');">ログアウト</a>
-	<div class="divDate">
-		<a href="/tasks?sort=closingDateAsc" class="btn btn-border"><span>日付順</span></a>
-		</div>
-		<div class="btn-container">
-			<a href="/tasks"><button class="btn-new" type="button">全タスク</a>
-			</div>
-		<div class="btn-container">
-			<a class="btn-new" th:each="c:${categories}" th:href="'/tasks?categoryId='+${c.id}">
-				<span th:text="${c.name}" style="padding-left: 10px;"></span>
+	<h1 id="font">
+		<a href="/tasks" class="header-logo">
+			<img src="/icons/checkIcon.png" alt="icon">
+<!--			<img src="../static/icons/checkIcon.png" alt="icon">-->
+			<span>ToDoリスト</span>
+					</a>
+				</h1>
+				<div class="user-status">
+					<span>[[${@account.name}]]さんがログイン中</span>
+					<a href="/logout" class="btn-logout" onclick="return confirm('本当にログアウトしますか？');">ログアウト</a>
 				</div>
-			
-			</a>
-</header>
+			</header>

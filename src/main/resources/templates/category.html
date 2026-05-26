@@ -4,34 +4,43 @@
 <head>
 	<meta charset="UTF-8">
 	<title>カテゴリー一覧</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<!--<link rel="stylesheet" type="text/css" href="../static/css/style.css">-->
+	<link rel="icon" href="/icons/checkIcon.png">
 </head>
 
 <body>
-	<h1>カテゴリー一覧</h1>
-	<table border="1">
-	<tr>
-		<th>ID</th>
-		<th>カテゴリー名</th>
-<!--		<th>更新</th>-->
-		<th>削除</th>
-	</tr>
-	<tr th:each="category:${categories}">
-		<td th:text="${category.id}"></td>
-		<td th:text="${category.name}"></td>
-<!--		<td>-->
-<!--			<form th:action="'categories/'+${category.id}+'/edit'" method="get">-->
-<!--				<input type="submit" value="更新">-->
-<!--			</form>-->
-<!--		</td>-->
-		<td>
-			<form th:action="'/categories/'+${category.id}+'/delete'" method="post">
-				<input type="submit" value="削除">
-			</form>
-		</td>
-	</tr>
-	</table>
+	<header th:replace="~{header}"></header>
+	
+	<div class="main-container">
+			
+			<h1 class="section-title">カテゴリー一覧</h1>
+			
+			<div class="table-card">
+				<table border="1" class="task-table">
+					<tr>
+						<th>ID</th>
+						<th>カテゴリー名</th>
+						<th>削除</th>
+					</tr>
+					<tr th:each="category:${categories}">
+						<td th:text="${category.id}"></td>
+						<td th:text="${category.name}"></td>
+						<td>
+							<form th:action="'/categories/'+${category.id}+'/delete'" method="post">
+								<input type="submit" value="削除" class="btn-edit-delete">
+							</form>
+						</td>
+					</tr>
+				</table>
+			</div>
 
-	<a href="/categories/add">カテゴリ登録へ戻る</a><br>
+			<div class="bottom-links" style="margin-top: 20px;">
+				<a href="/categories/add" class="btn-link-text">カテゴリ登録へ戻る</a>
+			</div>
+			
+		</div>
+	<footer th:replace="~{footer}"></footer>
 </body>
 
 </html>

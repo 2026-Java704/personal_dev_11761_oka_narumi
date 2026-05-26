@@ -5,29 +5,46 @@
 	<meta charset="UTF-8">
 	<title>カテゴリー登録</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<!--<link rel="stylesheet" type="text/css" href="../static/css/style.css">-->
 	<link rel="icon" href="/icons/checkIcon.png">
 </head>
 
 <body>
 	<header th:replace="~{header}"></header>
-	<h1>カテゴリー登録</h1>
 
-	<form action="/categories/add" method="post">
-		<table border="1">
-			<tr>
-				<th>カテゴリー名</th>
-				<td>
-					<input type="text" name="name">
-				</td>
-			</tr>
-		</table>
-		<input type="submit" value="登録">
-	</form>
-	<form action="/categories/index" method="get">
-		<input type="submit" value="カテゴリー一覧へ">
-	</form>
-	<a href="/tasks">タスク一覧へ戻る</a><br>
-	<footer th:replace="footer"></footer>
+	<div class="main-container">
+
+		<h1 class="section-title">カテゴリー登録</h1>
+
+		<form action="/categories/add" method="post" style="width: 100%; max-width: 600px; margin: 0 auto;">
+
+			<table border="1" class="task-form-table">
+				<tr>
+					<th>カテゴリー名</th>
+					<td>
+						<input type="text" name="name">
+					</td>
+				</tr>
+			</table>
+
+			<div style="margin-top: 25px; text-align: center;">
+				<input type="submit" value="登録" class="btn-search"
+					style="height: 40px; padding: 0 40px; border-radius: 20px;">
+			</div>
+		</form>
+
+		<div class="bottom-links" style="margin-top: 40px;">
+
+			<form action="/categories/index" method="get">
+				<input type="submit" value="カテゴリー一覧へ" class="btn-edit-delete" style="padding: 8px 24px;">
+			</form>
+
+			<a href="/tasks" class="btn-link-text">タスク一覧へ戻る</a>
+		</div>
+
+	</div>
+
+	<footer th:replace="~{footer}"></footer>
 </body>
 
 </html>

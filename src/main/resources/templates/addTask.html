@@ -3,73 +3,87 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>新規タスク作成</title>
+	<title>新規タスク作成 - ToDoアプリ</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<!--<link rel="stylesheet" type="text/css" href="../static/css/style.css">-->
 	<link rel="icon" href="/icons/checkIcon.png">
 </head>
+	<body>
+		<header th:replace="~{header}"></header>
 
-<body>
-	<header th:replace="~{header}"></header>
-	<div th:each="error:${errorList}">
-		<span th:text="${error}" style="color: red"></span>
-		<br>
-	</div>
-	<form action="/tasks/add" method="post">
-		<table border="1">
-			<tr>
-				<th>カテゴリー</th>
-				<td>
-					<select name="categoryId">
-						<option th:each="category:${categories}"
-						th:value="${category.id}" th:text="${category.name}"></option>
+		<main class="main-container">
+			
+			<h2 style="color: #ffffff; font-size: 1.2rem; font-weight: bold; margin-bottom: 25px; letter-spacing: 0.05em;">新規タスク作成</h2>
 
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<th>タイトル</th>
-				<td>
-					<input type="text" name="title">
-				</td>
-			</tr>
-			<tr>
-				<th>期限</th>
-				<td>
-					<input type="date" name="closingDate">
-				</td>
-			</tr>
-			<tr>
-				<th>進捗状況</th>
-				<td>
-					<select name="progress">
-						<option th:value="0">未着手</option>
-						<option th:value="1">進行中</option>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<th>重要度</th>
-				<td>
-					<select name="importance">
-						<option th:value="0">高</option>
-						<option th:value="1">中</option>
-						<option th:value="2">低</option>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<th>メモ</th>
-				<td>
-					<textarea name="memo" cols="30" rows="5">
-					</textarea>
-				</td>
-			</tr>
-		</table>
-		<div class="btn-container">
-		<button class="btn-new">登録</button>
-		</div>
-	</form>
-	<footer th:replace="footer"></footer>
-</body>
+			<div th:each="error:${errorList}" style="width: 100%; max-width: 600px; text-align: left; margin-bottom: 10px;">
+				<span th:text="${error}" style="color: #ff4d4d; font-size: 0.85rem; font-weight: bold;"></span>
+			</div>
 
-</html>
+			<form action="/tasks/add" method="post" style="width: 100%; max-width: 600px;">
+				
+				<div class="form-card-container">
+					
+					<table class="task-form-table">
+						<tr>
+							<th>カテゴリー</th>
+							<td>
+								<select name="categoryId">
+									<option th:each="category:${categories}"
+									th:value="${category.id}" th:text="${category.name}"></option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>タイトル</th>
+							<td>
+								<input type="text" name="title" placeholder="タスクのタイトルを入力">
+							</td>
+						</tr>
+						<tr>
+							<th>期限</th>
+							<td>
+								<input type="date" name="closingDate">
+							</td>
+						</tr>
+						<tr>
+							<th>進捗状況</th>
+							<td>
+								<select name="progress">
+									<option th:value="0">未着手</option>
+									<option th:value="1">進行中</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>重要度</th>
+							<td>
+								<select name="importance">
+									<option th:value="0">高</option>
+									<option th:value="1">中</option>
+									<option th:value="2">低</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>メモ</th>
+							<td>
+								<textarea name="memo" rows="4" placeholder="詳細を入力"></textarea>
+							</td>
+						</tr>
+					</table>
+				</div>
+				
+				<div class="btn-container" style="margin-top: 25px;">
+					<button class="btn-search" type="submit" style="padding: 0 40px; height: 40px;">登録</button>
+				</div>
+			</form>
+
+			<div class="bottom-links" style="margin-top: 25px;">
+				<a href="/tasks" class="btn-link-text">タスク一覧に戻る</a>
+			</div>
+		</main>
+
+		<footer th:replace="~{footer}"></footer>
+	</body>
+
+	</html>

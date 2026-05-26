@@ -5,38 +5,54 @@
 	<meta charset="UTF-8">
 	<title>新規登録</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<!--<link rel="stylesheet" type="text/css" href="../static/css/style.css">-->
+	<link rel="icon" href="/icons/checkIcon.png">
 </head>
 
 <body>
-	<h1>新規登録</h1>
+	<header class="login-header">
+			<h1 id="font"><a href="/">ToDoリスト</a></h1>
+		</header>
+	<div class="main-container">
+		
+		<h1 class="section-title">新規登録</h1>
 
-	<form action="/users/add" method="post">
-		<div th:each="error:${errorList}">
-			<span th:text="${error}" style="color: red"></span>
-			<br>
-		</div>
-		<table border="1">
-			<tr>
-				<th>名前</th>
-				<td>
-					<input type="text" name="name" placeholder="名前" th:value="${name}">
-				</td>
-			</tr>
-			<tr>
-				<th>メールアドレス</th>
-				<td>
-					<input type="text" name="email" placeholder="メールアドレス" th:value="${email}">
-				</td>
-			</tr>
-			<tr>
-				<th>パスワード</th>
-				<td>
-					<input type="password" name="password" placeholder="パスワード">
-				</td>
-			</tr>
-		</table>
-		<button>新規作成</button>
-	</form>
+		<form action="/users/add" method="post" style="width: 100%; max-width: 600px; margin: 0 auto;">
+			
+			<div th:each="error:${errorList}" style="text-align: left; margin-bottom: 10px;">
+				<span th:text="${error}" style="color: red"></span>
+				<br>
+			</div>
+			
+			<table border="1" class="task-form-table">
+				<tr>
+					<th>名前</th>
+					<td>
+						<input type="text" name="name" placeholder="名前" th:value="${name}">
+					</td>
+				</tr>
+				<tr>
+					<th>メールアドレス</th>
+					<td>
+						<input type="text" name="email" placeholder="メールアドレス" th:value="${email}">
+					</td>
+				</tr>
+				<tr>
+					<th>パスワード</th>
+					<td>
+						<input type="password" name="password" placeholder="パスワード">
+					</td>
+				</tr>
+			</table>
+			
+			<div style="margin-top: 25px; text-align: center;">
+				<button class="btn-search" style="height: 40px; padding: 0 30px; border-radius: 20px;">新規作成</button>
+			</div>
+			
+		</form>
+		
+	</div>
+	<footer th:replace="~{footer}"></footer>
 </body>
 
 </html>

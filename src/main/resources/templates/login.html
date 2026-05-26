@@ -3,41 +3,48 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>ログイン</title>
+	<title>ログイン - ToDoアプリ</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link  rel="icon" href="../static/icons/checkIcon.png">
+	<!--<link rel="stylesheet" type="text/css" href="../static/css/style.css">-->
 	<link rel="icon" href="/icons/checkIcon.png">
 </head>
 
 <body>
-	<header>
-<h1><a href="/">checkIcon</a></h1>
-		
-		<h1>ログイン</h1>
+	<header class="login-header">
+		<h1 id="font"><a href="/">ToDoリスト</a></h1>
 	</header>
-	<main>
+
+	<main class="login-container">
 		<form class="form" action="/login" method="post">
-			<div th:each="error:${errorList}">
-				<span th:text="${error}" style="color: red"></span>
-				<br>
+			
+			<h2 class="form-title" style="color: #ffffff; font-size: 1.2rem; font-weight: bold; margin-bottom: 5px;">ログイン</h2>
+
+			<div th:each="error:${errorList}" class="error-msg-container" style="width: 100%; text-align: left;">
+				<span th:text="${error}" style="color: #ff4d4d; font-size: 0.8rem; font-weight: bold;"></span>
 			</div>
+			
+			<div th:if="${message}" class="error-msg-container" style="width: 100%; text-align: left;">
+				<span th:text="${message}" style="color: #ff4d4d; font-size: 0.8rem; font-weight: bold;"></span>
+			</div>
+
 			<div class="input-span">
-			<label class="label">email</label>
-			<input type="email" name="email" placeholder="メールアドレス" th:value="${email}"><br>
+				<label class="label">Email</label>
+				<input type="email" name="email" placeholder="メールアドレス" th:value="${email}" required autocomplete="email">
 			</div>
+			
 			<div class="input-span">
-						<label class="label">email</label>
-			<input type="password" name="password" placeholder="パスワード"><br>
+				<label class="label">Password</label>
+				<input type="password" name="password" placeholder="パスワード" required autocomplete="current-password">
 			</div>
-			<button class="submit">ログイン</button>
-			<br> <span th:text="${message}" style="color: red"></span>
-			<br>
-					<div class="span">
-					<a href="/users/new"><button class="btn-new" type="button">新しいアカウントを作成</button></a>
-					</div>
+			
+			<button class="submit" type="submit">ログイン</button>
+			
+			<span class="span">
+				アカウントをお持ちでないですか？ <a href="/users/new">新規登録</a>
+			</span>
 		</form>
-		
 	</main>
+
 	<footer th:replace="~{footer}"></footer>
 </body>
 

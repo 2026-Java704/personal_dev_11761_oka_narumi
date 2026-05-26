@@ -46,8 +46,8 @@ public class TaskController {
 			return "redirect:/login";
 		}
 
-		// 全カテゴリー一覧を取得
-		List<Category> categoryList = categoryRepository.findAll();
+		// ユーザーごとの全カテゴリー一覧を取得
+		List<Category> categoryList = categoryRepository.findByUserIdOrUserId(0, account.getId());
 		model.addAttribute("categories", categoryList);
 
 		// タスク一覧情報の取得
@@ -76,8 +76,7 @@ public class TaskController {
 			return "redirect:/login";
 		}
 
-		List<Category> categoryList = categoryRepository.findAll();
-
+		List<Category> categoryList = categoryRepository.findByUserIdOrUserId(0, account.getId());
 		model.addAttribute("categories", categoryList);
 
 		// addTask.htmlを出力
@@ -141,10 +140,9 @@ public class TaskController {
 		}
 
 		Task task = taskRepository.findById(id).get();
-		List<Category> categoryList = categoryRepository.findAll();
-
-		model.addAttribute("task", task);
+		List<Category> categoryList = categoryRepository.findByUserIdOrUserId(0, account.getId());
 		model.addAttribute("categories", categoryList);
+		model.addAttribute("task", task);
 
 		return "editTask";
 	}
@@ -220,19 +218,46 @@ public class TaskController {
 		return "addCategory";
 	}
 
-	// カテゴリー新規登録処理
 	@PostMapping("/categories/add")
 	public String store(
-			@RequestParam(defaultValue = "") Integer categoryId,
 			@RequestParam(defaultValue = "") String name,
 			Model model) {
 
-		Category category = new Category(categoryId, name);
+		if (account.getId() == null) {
+			return "redirect:/login";
+		}
 
-		// テーブルへの反映（INSERT）
+		if (name == null || name.length() == 0) {
+			model.addAttribute("error", "カテゴリー名を入力してください");
+			return "addCategory";
+		}
+
+		Category category = new Category(account.getId(), name);
+
 		categoryRepository.save(category);
+
 		return "redirect:/tasks";
 	}
+	//	// カテゴリー新規登録処理
+	//	@PostMapping("/categories/add")
+	//	public String store(
+	//			@RequestParam(defaultValue = "") String name,
+	//			Model model) {
+	//
+	//		if (account.getId() == null) {
+	//			return "redirect:/login";
+	//		}
+	//
+	//		if (name == null || name.length() == 0) {
+	//			model.addAttribute("error", "カテゴリー名を入力してください");
+	//			return "addCategory";
+	//		}
+	//
+	//		Category category = new Category(account.getId(), name);
+	//
+	//		categoryRepository.save(category);
+	//		return "redirect:/tasks";
+	//	}
 
 	//	// 更新画面表示
 	//	@GetMapping("/categories/{id}/edit")
@@ -267,9 +292,18 @@ public class TaskController {
 
 	// 削除処理
 	@PostMapping("/categories/{id}/delete")
-	public String delete(@PathVariable Integer id, Model model) {
+	public String deleteCategory(@PathVariable Integer id, Model model) {
 
-		// テーブルから削除（DELETE）
+		if (account.getId() == null) {
+			return "redirect:/login";
+		}
+
+		Category category = categoryRepository.findById(id).get();
+
+		if (!category.getUserId().equals(account.getId())) {
+			return "redirect:/categories/index";
+		}
+
 		categoryRepository.deleteById(id);
 		return "redirect:/categories/index";
 	}
@@ -281,7 +315,7 @@ public class TaskController {
 			Model model) {
 
 		// テーブルから全カテゴリー一覧を取得
-		List<Category> categoryList = categoryRepository.findAll();
+		List<Category> categoryList = categoryRepository.findByUserIdOrUserId(0, account.getId());
 		model.addAttribute("categories", categoryList);
 
 		return "category";
