@@ -68,7 +68,7 @@
 			<table class="task-table">
 				<thead>
 					<tr>
-						<!--						<th>NO</th>-->
+						<th>完了</th>
 						<th>タイトル</th>
 						<th>カテゴリー</th>
 						<th>期限</th>
@@ -81,7 +81,11 @@
 				</thead>
 
 				<tr th:each="task:${tasks}">
-					<!--						<td th:text="${task.id}"></td>-->
+					<td>
+						<form th:action="@{/tasks/{taskId}/complete(taskId=${task.id})}" method="post">
+							<input type="checkbox" class="complete-checkbox" onchange="this.form.submit()">
+						</form>
+					</td>
 					<td th:text="${task.title}"></td>
 					<td th:text="${task.category.name}"></td>
 					<td th:text="${task.closingDate}"></td>
@@ -115,6 +119,7 @@
 		<div class="bottom-links">
 			<a href="/tasks/new" class="btn-link-text">タスク追加</a>
 			<a href="/categories/add" class="btn-link-text">カテゴリー追加</a>
+			<a href="/tasks/history" class="btn-link-text">履歴一覧</a>
 
 			<!--			<div class="category-filter-list"-->
 			<!--				style="margin-top: 15px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">-->

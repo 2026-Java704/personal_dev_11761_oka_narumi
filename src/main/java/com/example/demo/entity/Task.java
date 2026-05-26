@@ -31,12 +31,13 @@ public class Task {
 	private Integer progress;
 	private Integer importance; //
 	private String memo;
+	private Boolean completed;
 
 	public Task() {
 	}
 
 	public Task(Integer userId, Category category, String title, LocalDate closingDate,
-			Integer progress, Integer importance, String memo) {
+			Integer progress, Integer importance, String memo, Boolean completed) {
 		this.userId = userId;
 		this.category = category;
 		this.title = title;
@@ -44,6 +45,7 @@ public class Task {
 		this.progress = progress;
 		this.importance = importance;
 		this.memo = memo;
+		this.completed = completed;
 
 	}
 
@@ -109,5 +111,13 @@ public class Task {
 
 	public void setMemo(String memo) {
 		this.memo = memo;
+	}
+
+	public Boolean getCompleted() {
+		return completed;
+	}
+
+	public void setCompleted(Boolean completed) {
+		this.completed = completed;
 	}
 }

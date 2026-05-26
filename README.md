@@ -2,176 +2,72 @@
 
 ## 1. アプリ概要
 
-このアプリは、ユーザー登録・ログイン後にタスクを登録・一覧表示・検索・カテゴリ別表示・更新・削除できるWebアプリケーションです。
+このアプリは、ログイン後にタスクを登録・表示・検索・更新・削除できる ToDo アプリです。
 
-現在の実装では、ユーザー情報、カテゴリ情報、タスク情報をPostgreSQLで管理し、ログイン後にタスク一覧画面を表示する構成になっています。
+今回の修正では、既存機能をできるだけ崩さずに、次の機能を追加しました。
 
-ただし、現状コードでは、ログインユーザーIDをセッションに保持していないため、タスクをユーザー別に管理できません。  
-また、未ログイン時のアクセス制御、タスク登録時の `user_id` 保存、ユーザー別検索、パスワード入力欄、日付パラメータ名などに改善が必要です。
+- タスク一覧にチェックボックスを追加
+- チェックを入れたタスクを「完了」として保存
+- 完了したタスクを履歴一覧へ移動して管理
 
----
-
-## 2. 主な機能
-
-| No | 機能 | 現在の状態 | 内容 |
-|---|---|---|---|
-| 1 | ログイン | 実装済み | メールアドレスとパスワードでログインする |
-| 2 | ログアウト | 実装済み | ログイン画面アクセス時にセッションを破棄する |
-| 3 | 新規ユーザー登録 | 実装済み | 名前、メールアドレス、パスワードを登録する |
-| 4 | タスク一覧表示 | 実装済み | 登録済みタスクを一覧表示する |
-| 5 | タイトル検索 | 実装済み | タスクタイトルの部分一致で検索する |
-| 6 | カテゴリ別表示 | 実装済み | カテゴリIDでタスクを絞り込む |
-| 7 | タスク新規登録 | 実装済み | カテゴリ、タイトル、期限、進捗、メモを登録する |
-| 8 | タスク更新 | 実装済み | 登録済みタスクを編集する |
-| 9 | タスク削除 | 実装済み | 登録済みタスクを削除する |
-| 10 | ログインユーザーごとのタスク管理 | 未完成 | `user_id` を保存・検索に使っていない |
+この README では、受講生が「どこを修正すればこの機能が作れるのか」を理解できるように、追加・修正した内容をやさしく整理しています。
 
 ---
 
-## 3. 使用技術
+## 2. 今回追加した機能
 
-| 分類 | 技術 |
-|---|---|
-| 言語 | Java 21 |
-| フレームワーク | Spring Boot |
-| テンプレートエンジン | Thymeleaf |
-| ORM | Spring Data JPA |
-| データベース | PostgreSQL |
-| ビルドツール | Gradle |
-| フロントエンド | HTML / CSS |
-| セッション管理 | `HttpSession` / `@SessionScope` |
+### 2-1. やりたいこと
+
+今回やりたいことはとてもシンプルです。
+
+1. タスク一覧にチェックボックスを表示する
+2. チェックしたら、そのタスクを完了にする
+3. 完了したタスクは一覧から消して、履歴一覧に表示する
 
 ---
 
-## 4. プロジェクト構成
+## 3. 追加・修正したファイル
 
-```text
-personal_dev_11761_oka_narumi
-├── build.gradle
-├── settings.gradle
-├── gradlew
-├── gradlew.bat
-└── src
-    ├── main
-    │   ├── java
-    │   │   └── com.example.demo
-    │   │       ├── PersonalDev11761OkaNarumiApplication.java
-    │   │       ├── controller
-    │   │       │   ├── TaskController.java
-    │   │       │   └── UserController.java
-    │   │       ├── entity
-    │   │       │   ├── Category.java
-    │   │       │   ├── Task.java
-    │   │       │   └── User.java
-    │   │       ├── model
-    │   │       │   └── Account.java
-    │   │       └── repository
-    │   │           ├── CategoryRepository.java
-    │   │           ├── TaskRepository.java
-    │   │           └── UserRepository.java
-    │   └── resources
-    │       ├── application.properties
-    │       ├── schema.sql
-    │       ├── data.sql
-    │       ├── static
-    │       │   └── css
-    │       │       └── style.css
-    │       └── templates
-    │           ├── addTask.html
-    │           ├── editTask.html
-    │           ├── header.html
-    │           ├── login.html
-    │           ├── tasks.html
-    │           └── userForm.html
-    └── test
-```
+| ファイル | 役割 | 変更内容 |
+|---|---|---|
+| `src/main/java/com/example/demo/entity/Task.java` | Entity | `completed` を追加 |
+| `src/main/java/com/example/demo/repository/TaskRepository.java` | Repository | 未完了・完了で絞り込むメソッドを追加 |
+| `src/main/java/com/example/demo/controller/TaskController.java` | Controller | 履歴表示処理、完了処理を追加 |
+| `src/main/resources/templates/tasks.html` | 一覧画面 | チェックボックスと履歴一覧リンクを追加 |
+| `src/main/resources/templates/history.html` | 履歴画面 | 新規追加 |
+| `src/main/resources/static/css/style.css` | CSS | チェックボックスの見た目を少し調整 |
+| `src/main/resources/schema.sql` | DB定義 | `completed` カラムを追加 |
+| `src/main/resources/data.sql` | 初期データ | `completed` の初期値を追加 |
+| `src/main/resources/application.properties` | DB接続設定 | PostgreSQL 接続URLを修正 |
 
 ---
 
-## 5. 画面一覧
+## 4. 修正の考え方
 
-| 画面 | ファイル | URL | 内容 |
-|---|---|---|---|
-| ログイン画面 | `login.html` | `/login` | メールアドレスとパスワードでログインする |
-| 新規ユーザー登録画面 | `userForm.html` | `/users/new` | ユーザー情報を登録する |
-| タスク一覧画面 | `tasks.html` | `/tasks` | タスク一覧、タイトル検索、カテゴリ検索を表示する |
-| タスク新規登録画面 | `addTask.html` | `/tasks/new` | タスクを新規登録する |
-| タスク更新画面 | `editTask.html` | `/tasks/{id}/edit` | 登録済みタスクを更新する |
-| 共通ヘッダー | `header.html` | 共通部品 | アプリタイトル、ログイン中ユーザー名、ログアウトリンクを表示する |
+### 4-1. なぜ `completed` を追加するのか
 
----
+もともと `progress` には次の値が入っていました。
 
-## 6. URL一覧
+- `0` = 未着手
+- `1` = 進行中
+- `2` = 完了
 
-### UserController
+ただし、今回やりたいことは「完了したタスクを別画面の履歴に移す」ことです。
 
-| HTTPメソッド | URL | 処理内容 | 戻り先 |
-|---|---|---|---|
-| GET | `/` | セッション破棄・ログイン画面表示 | `login.html` |
-| GET | `/login` | セッション破棄・ログイン画面表示 | `login.html` |
-| POST | `/login` | ログイン処理 | 成功時 `redirect:/tasks` |
-| GET | `/users/new` | 新規ユーザー登録画面表示 | `userForm.html` |
-| POST | `/users/add` | 新規ユーザー登録処理 | 成功時 `redirect:/login` |
+そのため、`progress` だけを見るのではなく、
 
-### TaskController
+- 未完了なら `completed = false`
+- 完了なら `completed = true`
 
-| HTTPメソッド | URL | 処理内容 | 戻り先 |
-|---|---|---|---|
-| GET | `/tasks` | タスク一覧表示・検索・カテゴリ絞り込み | `tasks.html` |
-| GET | `/tasks/new` | タスク新規登録画面表示 | `addTask.html` |
-| POST | `/tasks/add` | タスク新規登録処理 | 成功時 `redirect:/tasks` |
-| GET | `/tasks/{id}/edit` | タスク更新画面表示 | `editTask.html` |
-| POST | `/tasks/{id}/edit` | タスク更新処理 | 成功時 `redirect:/tasks` |
-| POST | `/tasks/{id}/delete` | タスク削除処理 | 成功時 `redirect:/tasks` |
+という形で、完了したかどうかを分かりやすく管理するようにしました。
+
+初心者向けに考えると、`true / false` の方が意味が分かりやすいです。
 
 ---
 
-## 7. データベース設計
+## 5. DBの修正
 
-### categories テーブル
-
-カテゴリ情報を管理するテーブルです。
-
-```sql
-CREATE TABLE categories
-(
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(50)
-);
-```
-
-| カラム名 | 型 | 制約 | 内容 |
-|---|---|---|---|
-| id | SERIAL | PRIMARY KEY | カテゴリID |
-| name | VARCHAR(50) | なし | カテゴリ名 |
-
----
-
-### users テーブル
-
-ユーザー情報を管理するテーブルです。
-
-```sql
-CREATE TABLE users (
-    id INTEGER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
-    email VARCHAR(50),
-    name VARCHAR(20),
-    password VARCHAR(255)
-);
-```
-
-| カラム名 | 型 | 制約 | 内容 |
-|---|---|---|---|
-| id | INTEGER | PRIMARY KEY / 自動採番 | ユーザーID |
-| email | VARCHAR(50) | なし | メールアドレス |
-| name | VARCHAR(20) | なし | ユーザー名 |
-| password | VARCHAR(255) | なし | パスワード |
-
----
-
-### tasks テーブル
-
-タスク情報を管理するテーブルです。
+### 5-1. `tasks` テーブルに `completed` を追加
 
 ```sql
 CREATE TABLE tasks (
@@ -181,264 +77,314 @@ CREATE TABLE tasks (
     title VARCHAR(50),
     closing_date DATE,
     progress INTEGER,
+    importance INTEGER,
     memo TEXT,
+    completed BOOLEAN,
     FOREIGN KEY(category_id) REFERENCES categories(id),
     FOREIGN KEY(user_id) REFERENCES users(id)
 );
 ```
 
-| カラム名 | 型 | 制約 | 内容 |
-|---|---|---|---|
-| id | INTEGER | PRIMARY KEY / 自動採番 | タスクID |
-| category_id | INTEGER | FOREIGN KEY | カテゴリID |
-| user_id | INTEGER | FOREIGN KEY | ユーザーID |
-| title | VARCHAR(50) | なし | タスクタイトル |
-| closing_date | DATE | なし | 期限日 |
-| progress | INTEGER | なし | 進捗状況 |
-| memo | TEXT | なし | メモ |
-
----
-
-## 8. 初期データ
-
-`data.sql` では、ユーザー、カテゴリ、タスクの初期データを登録しています。
-
-### users 初期データ
+### 5-2. 初期データにも `completed` を追加
 
 ```sql
-INSERT INTO users (email, name, password)
+INSERT INTO tasks (user_id,category_id, title, closing_date, progress, importance, memo, completed)
 VALUES
-('tanaka@aaa.com', '田中太郎', 'test123'),
-('suzuki@aaa.com', '鈴木一郎', 'test456');
+(1, 1, '会議', '2026/5/18', 0, 0, '13:00～ A会議室', false),
+(2, 2, '勉強', '2026/5/18', 1, 1, '最低20分勉強する', false);
 ```
 
-### categories 初期データ
-
-```sql
-INSERT INTO categories(name) VALUES('運動');
-INSERT INTO categories(name) VALUES('勉強');
-INSERT INTO categories(name) VALUES('その他');
-```
-
-### tasks 初期データ
-
-```sql
-INSERT INTO tasks (user_id, category_id,title, closing_date, progress, memo)
-VALUES
-(1, 1, '散歩', '2026/5/18', 0, '最低20分散歩する'),
-(2, 2, '勉強', '2026/5/18', 1, '最低20分勉強する');
-```
+ポイントは、最初はまだ完了していないので `false` にしていることです。
 
 ---
 
-## 9. Entity一覧
+## 6. Entityの修正
 
-| Entity | 対応テーブル | 役割 |
-|---|---|---|
-| `User.java` | `users` | ユーザー情報を扱う |
-| `Category.java` | `categories` | カテゴリ情報を扱う |
-| `Task.java` | `tasks` | タスク情報を扱う |
-
----
-
-## 10. Repository一覧
-
-| Repository | 対応Entity | 主な役割 |
-|---|---|---|
-| `UserRepository.java` | `User` | ユーザー検索・保存 |
-| `CategoryRepository.java` | `Category` | カテゴリ検索 |
-| `TaskRepository.java` | `Task` | タスク検索・保存・削除 |
-
-### UserRepository
+### 6-1. `Task.java` に `completed` を追加
 
 ```java
-List<User> findByNameContaining(String keyword);
-
-List<User> findByEmailAndPassword(String email, String password);
+private Boolean completed;
 ```
 
-メールアドレスとパスワードによるログイン検索に使用します。
-
-### TaskRepository
+getter / setter も追加します。
 
 ```java
-List<Task> findByCategoryId(Integer categoryId);
+public Boolean getCompleted() {
+    return completed;
+}
 
-List<Task> findByTitleContaining(String keyword);
-```
-
-カテゴリ別検索、タイトル検索に使用します。
-
-ただし、ログインユーザーごとのタスク一覧にする場合は、以下のメソッドを追加する必要があります。
-
-```java
-List<Task> findByUserId(Integer userId);
-
-List<Task> findByUserIdAndCategoryId(Integer userId, Integer categoryId);
-
-List<Task> findByUserIdAndTitleContaining(Integer userId, String keyword);
-```
-
----
-
-## 11. Model一覧
-
-### Account.java
-
-`Account.java` は、ログイン中ユーザーの情報をセッションで保持するためのクラスです。
-
-現在は `name` のみを保持しています。
-
-```java
-@Component
-@SessionScope
-public class Account {
-    private String name;
+public void setCompleted(Boolean completed) {
+    this.completed = completed;
 }
 ```
 
-ただし、ログインユーザーごとのタスク管理を行うには、`id` も必要です。
+### 6-2. コンストラクタにも追加
 
 ```java
-private Integer id;
+public Task(Integer userId, Category category, String title, LocalDate closingDate,
+        Integer progress, Integer importance, String memo, Boolean completed) {
+    this.userId = userId;
+    this.category = category;
+    this.title = title;
+    this.closingDate = closingDate;
+    this.progress = progress;
+    this.importance = importance;
+    this.memo = memo;
+    this.completed = completed;
+}
 ```
 
-ログイン成功時に以下を保持する構成にするべきです。
-
-| フィールド | 内容 |
-|---|---|
-| id | ログイン中ユーザーID |
-| name | ログイン中ユーザー名 |
+ここでやっていることは単純で、「Task を new するときに completed も一緒に渡せるようにした」だけです。
 
 ---
 
-## 12. 処理の流れ
+## 7. Repositoryの修正
 
-### 12-1. ログイン処理
+### 7-1. 完了・未完了で検索できるようにする
 
-```text
-ログイン画面を表示
-  ↓
-メールアドレスとパスワードを入力
-  ↓
-UserRepositoryでユーザー検索
-  ↓
-一致するユーザーが存在するか確認
-  ↓
-存在する場合、Accountにユーザー名を保存
-  ↓
-タスク一覧画面へリダイレクト
+`TaskRepository.java` に次のメソッドを追加しました。
+
+```java
+List<Task> findByUserIdAndCompletedFalse(Integer userId);
+
+List<Task> findByUserIdAndCompletedTrue(Integer userId);
+
+List<Task> findByUserIdAndCategoryIdAndCompletedFalse(Integer userId, Integer categoryId);
+
+List<Task> findByUserIdAndTitleContainingAndCompletedFalse(Integer userId, String keyword);
+
+List<Task> findByUserIdAndCompletedFalseOrderByClosingDateAsc(Integer userId);
+
+List<Task> findByUserIdAndImportanceAndCompletedFalse(Integer userId, Integer importance);
 ```
 
-現在は `Account` にユーザー名のみを保存しています。  
-ユーザーごとのタスク管理を行うには、ユーザーIDも保存する必要があります。
+### 7-2. なぜこのメソッドが必要なのか
+
+一覧画面では「未完了タスクだけ」を表示したいです。
+
+履歴画面では「完了タスクだけ」を表示したいです。
+
+そのため、
+
+- 一覧画面用の検索
+- 履歴画面用の検索
+
+を分けて作っています。
+
+Spring Data JPA は、メソッド名をこう書くだけで SQL の代わりに使えるので、初心者でも扱いやすいです。
 
 ---
 
-### 12-2. 新規ユーザー登録処理
+## 8. Controllerの修正
 
-```text
-新規ユーザー登録画面を表示
-  ↓
-名前、メールアドレス、パスワードを入力
-  ↓
-入力チェック
-  ↓
-usersテーブルへ保存
-  ↓
-ログイン画面へ戻る
+### 8-1. 一覧画面では未完了だけ表示する
+
+`/tasks` の処理で、今までは全件や通常検索を使っていましたが、未完了だけ取るメソッドに変えました。
+
+例:
+
+```java
+taskList = taskRepository.findByUserIdAndCompletedFalse(account.getId());
+```
+
+カテゴリ検索でも同じ考え方です。
+
+```java
+taskList = taskRepository.findByUserIdAndCategoryIdAndCompletedFalse(account.getId(), categoryId);
+```
+
+### 8-2. 履歴画面を追加する
+
+```java
+@GetMapping("/tasks/history")
+public String history(Model model) {
+
+    if (account.getId() == null) {
+        return "redirect:/login";
+    }
+
+    List<Task> taskList = taskRepository.findByUserIdAndCompletedTrue(account.getId());
+    model.addAttribute("tasks", taskList);
+
+    return "history";
+}
+```
+
+やっていることは次の3つです。
+
+1. ログインしているか確認
+2. 完了済みタスクだけ取得
+3. `history.html` に渡して表示
+
+### 8-3. タスク追加時に `completed` を保存する
+
+```java
+Boolean completed = false;
+if (progress != null && progress == 2) {
+    completed = true;
+}
+
+Task task = new Task(account.getId(), category, title, closingDate, progress, importance, memo, completed);
+```
+
+基本は `false` です。
+
+もし最初から進捗が `2` なら完了扱いにしています。
+
+### 8-4. タスク更新時にも `completed` を合わせる
+
+```java
+if (progress != null && progress == 2) {
+    task.setCompleted(true);
+} else {
+    task.setCompleted(false);
+}
+```
+
+これを入れておくことで、更新画面で進捗を完了にしたときも履歴側に回せます。
+
+### 8-5. チェックボックス用の完了処理を追加する
+
+```java
+@PostMapping("/tasks/{id}/complete")
+public String complete(@PathVariable Integer id) {
+
+    if (account.getId() == null) {
+        return "redirect:/login";
+    }
+
+    Task task = taskRepository.findById(id).get();
+
+    if (!task.getUserId().equals(account.getId())) {
+        return "redirect:/tasks";
+    }
+
+    task.setCompleted(true);
+    task.setProgress(2);
+    taskRepository.save(task);
+
+    return "redirect:/tasks/history";
+}
+```
+
+この処理が今回の中心です。
+
+流れはこうです。
+
+1. チェックボックスを押す
+2. 対象のタスクIDを受け取る
+3. `completed = true` にする
+4. `progress = 2` にする
+5. 保存する
+6. 履歴一覧へ移動する
+
+---
+
+## 9. HTMLの修正
+
+### 9-1. 一覧画面にチェックボックスを追加
+
+`tasks.html` の表に「完了」列を追加しました。
+
+```html
+<th>完了</th>
+```
+
+1件ずつの行には、完了用フォームを追加しています。
+
+```html
+<td>
+    <form th:action="@{/tasks/{taskId}/complete(taskId=${task.id})}" method="post">
+        <input type="checkbox" class="complete-checkbox" onchange="this.form.submit()">
+    </form>
+</td>
+```
+
+### 9-2. なぜフォームにしているのか
+
+チェックを入れた瞬間にサーバーへ送信したいからです。
+
+そのため、
+
+- `checkbox`
+- `onchange`
+- `form.submit()`
+
+を使っています。
+
+難しい JavaScript は使わず、最小限の書き方で実装しています。
+
+### 9-3. 履歴一覧へのリンクを追加
+
+```html
+<a href="/tasks/history" class="btn-link-text">履歴一覧</a>
 ```
 
 ---
 
-### 12-3. タスク一覧・検索処理
+## 10. 履歴画面の追加
 
-```text
-/tasks へアクセス
-  ↓
-カテゴリ一覧を取得
-  ↓
-categoryId がある場合はカテゴリ検索
-  ↓
-keyword がある場合はタイトル検索
-  ↓
-どちらもない場合は全件表示
-  ↓
-tasks.htmlへ categories / tasks / keyword を渡す
+新しく `history.html` を作成しました。
+
+ここでは完了タスクだけを表示します。
+
+```html
+<tr th:each="task:${tasks}">
+    <td th:text="${task.title}"></td>
+    <td th:text="${task.category.name}"></td>
+    <td th:text="${task.closingDate}"></td>
+    <td>完了</td>
+    <td th:text="${task.memo}"></td>
+</tr>
 ```
 
-現在は、ログイン中ユーザーに関係なく全タスクを表示します。
+考え方は `tasks.html` と同じです。
+
+違うのは、
+
+- 未完了一覧ではない
+- 完了済みだけを表示する
+
+という点です。
 
 ---
 
-### 12-4. タスク新規登録処理
+## 11. CSSの修正
 
-```text
-タスク新規登録画面を表示
-  ↓
-カテゴリ、タイトル、期限、進捗、メモを入力
-  ↓
-CategoryRepositoryでカテゴリを取得
-  ↓
-Taskを作成
-  ↓
-tasksテーブルへ保存
-  ↓
-タスク一覧画面へ戻る
+チェックボックスが小さすぎて押しにくくならないように、少しだけCSSを足しました。
+
+```css
+.complete-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
 ```
 
-現在は、登録時に `user_id` を保存していません。
+このくらいの修正なら、見た目を大きく崩さずに追加できます。
 
 ---
 
-### 12-5. タスク更新処理
+## 12. application.properties の修正
 
-```text
-一覧画面で更新ボタンを押す
-  ↓
-対象IDのタスクを取得
-  ↓
-更新画面に現在値を表示
-  ↓
-カテゴリ、タイトル、期限、進捗、メモを修正
-  ↓
-tasksテーブルを更新
-  ↓
-タスク一覧画面へ戻る
-```
-
----
-
-### 12-6. タスク削除処理
-
-```text
-一覧画面で削除ボタンを押す
-  ↓
-対象IDのタスクを削除
-  ↓
-タスク一覧画面へ戻る
-```
-
----
-
-## 13. application.properties
-
-現在のDB接続設定は以下です。
+PostgreSQL 接続を正しいURLに修正しました。
 
 ```properties
 spring.datasource.driver-class-name=org.postgresql.Driver
-spring.datasource.url=jdbc:postgresql:personal_dev_11761_oka_narumi
-spring.datasource.username=student
-spring.datasource.password=himitu
+spring.datasource.url=jdbc:postgresql://localhost:5432/personal_dev_11761_oka_narumi
+spring.datasource.username=postgres
+spring.datasource.password=0001
 spring.jpa.show-sql=true
 spring.sql.init.mode=always
 ```
 
-### 注意点
+### 12-1. 注意
 
-`spring.sql.init.mode=always` のため、アプリ起動時に `schema.sql` と `data.sql` が毎回実行されます。
+`spring.sql.init.mode=always` になっているので、起動時に `schema.sql` と `data.sql` が実行されます。
 
-開発中は初期化されて便利ですが、登録済みデータを保持したい場合は以下に変更する必要があります。
+つまり、アプリを起動するたびに初期データの状態に戻ります。
+
+学習用としては便利ですが、登録内容を残したい場合は次のように変えます。
 
 ```properties
 spring.sql.init.mode=never
@@ -446,817 +392,125 @@ spring.sql.init.mode=never
 
 ---
 
+## 13. 処理の流れ
+
+### 13-1. 一覧から完了にする流れ
+
+```text
+タスク一覧を開く
+  ↓
+チェックボックスにチェックする
+  ↓
+/tasks/{id}/complete にPOST送信される
+  ↓
+対象タスクを取得する
+  ↓
+completed を true にする
+  ↓
+progress を 2 にする
+  ↓
+DBへ保存する
+  ↓
+履歴一覧へリダイレクトする
+```
+
+### 13-2. 履歴一覧の表示の流れ
+
+```text
+/tasks/history にアクセスする
+  ↓
+completed = true のタスクだけ取得する
+  ↓
+history.html に渡す
+  ↓
+履歴一覧として表示する
+```
+
+---
+
 ## 14. セットアップ手順
 
-### 14-1. データベース作成
-
-PostgreSQLで以下のデータベースを作成します。
+### 14-1. PostgreSQL でDBを作成する
 
 ```sql
-CREATE DATABASE personal_dev_11761_oka_narumi;
+CREATE DATABASE personal_dev_11761_oka_narumi OWNER postgres ENCODING 'UTF8';
 ```
 
-### 14-2. application.properties確認
+### 14-2. 接続設定を確認する
 
-以下の設定が自分の環境と一致しているか確認します。
+`src/main/resources/application.properties`
 
 ```properties
-spring.datasource.url=jdbc:postgresql:personal_dev_11761_oka_narumi
-spring.datasource.username=student
-spring.datasource.password=himitu
+spring.datasource.url=jdbc:postgresql://localhost:5432/personal_dev_11761_oka_narumi
+spring.datasource.username=postgres
+spring.datasource.password=0001
 ```
 
-### 14-3. アプリ起動
-
-Mac / Linuxの場合は以下を実行します。
+### 14-3. アプリを起動する
 
 ```bash
 ./gradlew bootRun
 ```
 
-Windowsの場合は以下を実行します。
+### 14-4. ポート8080が使用中の場合
 
-```bat
-gradlew.bat bootRun
+他のアプリが 8080 を使っている場合は、次のように 8081 で起動できます。
+
+```bash
+./gradlew bootRun --args='--server.port=8081'
 ```
 
-### 14-4. ブラウザで確認
+### 14-5. ブラウザで確認する
 
-以下にアクセスします。
+通常:
 
 ```text
 http://localhost:8080/login
 ```
 
-ログイン後は以下に遷移します。
+8081 で起動した場合:
 
 ```text
-http://localhost:8080/tasks
+http://localhost:8081/login
 ```
 
 ---
 
-# 15. 現在の問題点
+## 15. 受講生向けの学習ポイント
 
-## 15-1. AccountにユーザーIDが保存されていない
+今回の修正で特に見てほしいポイントは次の5つです。
 
-現在の `Account.java` は以下のように `name` のみを持っています。
-
-```java
-private String name;
-```
-
-ログイン成功時も以下のみです。
-
-```java
-account.setName(user.getName());
-```
-
-この状態では、ログイン中ユーザーのIDがわからないため、タスクをユーザーごとに登録・表示できません。
-
-### 対応方針
-
-`Account.java` に `id` を追加します。
-
-```java
-private Integer id;
-```
-
-ログイン成功時に以下を保存します。
-
-```java
-account.setId(user.getId());
-account.setName(user.getName());
-```
+1. Entity に項目を1つ追加すると、DB・Repository・Controller・HTML も合わせて考える必要がある
+2. 一覧画面と履歴画面で「表示するデータの条件」を変えると、画面を分けて管理しやすい
+3. `true / false` の項目を使うと、完了・未完了の管理が分かりやすい
+4. チェックボックスから `POST` を送ると、ボタンを増やさなくても処理を実行できる
+5. 大きな書き換えをしなくても、既存コードに小さく足して機能追加できる
 
 ---
 
-## 15-2. タスク登録時にuserIdを保存していない
+## 16. 今回の修正まとめ
 
-`TaskController.java` の登録処理では、以下のように `Task` を作成しています。
+今回の追加・修正は、初心者向けに次の方針で実装しています。
 
-```java
-Task task = new Task(category, title, closing_date, progress, memo);
-taskRepository.save(task);
-```
+- 既存のコードの流れをできるだけ壊さない
+- 難しい設計や高度な書き方を使わない
+- Controller、HTML、Repository、Entity を素直に修正する
+- 「チェックしたら完了して履歴へ移動する」という目的だけに絞る
 
-この処理では、`tasks.user_id` にログイン中ユーザーIDが入りません。
+つまり、今回の機能追加は
 
-そのため、どのユーザーが登録したタスクなのか判別できません。
+- 新しい列を1つ追加する
+- 完了処理を1つ追加する
+- 履歴画面を1つ追加する
 
-### 対応方針
+というシンプルな実装です。
 
-登録時に以下を追加します。
+受講生が学ぶときは、まず次の順番で読むと理解しやすいです。
 
-```java
-task.setUserId(account.getId());
-```
+1. `tasks.html`
+2. `TaskController.java`
+3. `TaskRepository.java`
+4. `Task.java`
+5. `schema.sql`
 
----
-
-## 15-3. タスク一覧が全ユーザー共通になっている
-
-現在の一覧取得は以下です。
-
-```java
-if (categoryId != null) {
-    taskList = taskRepository.findByCategoryId(categoryId);
-} else if (keyword.length() > 0) {
-    taskList = taskRepository.findByTitleContaining(keyword);
-} else {
-    taskList = taskRepository.findAll();
-}
-```
-
-このままだと、全ユーザーのタスクが表示されます。
-
-### 対応方針
-
-ログインユーザーIDで絞り込みます。
-
-```java
-if (categoryId != null) {
-    taskList = taskRepository.findByUserIdAndCategoryId(account.getId(), categoryId);
-} else if (keyword.length() > 0) {
-    taskList = taskRepository.findByUserIdAndTitleContaining(account.getId(), keyword);
-} else {
-    taskList = taskRepository.findByUserId(account.getId());
-}
-```
-
-そのため、`TaskRepository.java` に以下を追加します。
-
-```java
-List<Task> findByUserId(Integer userId);
-
-List<Task> findByUserIdAndCategoryId(Integer userId, Integer categoryId);
-
-List<Task> findByUserIdAndTitleContaining(Integer userId, String keyword);
-```
-
----
-
-## 15-4. 未ログインでも `/tasks` にアクセスできる
-
-現在、`TaskController.java` の `/tasks` ではログイン確認をしていません。
-
-そのため、未ログイン状態でも直接以下にアクセスできる可能性があります。
-
-```text
-http://localhost:8080/tasks
-```
-
-### 対応方針
-
-`TaskController` の各処理の先頭に以下を追加します。
-
-```java
-if (account.getId() == null) {
-    return "redirect:/login";
-}
-```
-
----
-
-## 15-5. 新規タスク画面にカテゴリ一覧を渡していない
-
-`TaskController.java` の新規タスク画面表示処理は以下です。
-
-```java
-@GetMapping("/tasks/new")
-public String add() {
-    return "addTask";
-}
-```
-
-しかし、`addTask.html` のカテゴリ選択は固定値になっています。
-
-```html
-<option th:value="1">運動</option>
-<option th:value="2">勉強</option>
-<option th:value="3">その他</option>
-```
-
-現状でも動作はしますが、カテゴリをDBで管理しているなら、Controllerからカテゴリ一覧を渡す方が安全です。
-
-### 対応方針
-
-Controllerでカテゴリ一覧を取得します。
-
-```java
-@GetMapping("/tasks/new")
-public String add(Model model) {
-    List<Category> categoryList = categoryRepository.findAll();
-    model.addAttribute("categories", categoryList);
-    return "addTask";
-}
-```
-
-HTML側は以下のようにします。
-
-```html
-<option th:each="category:${categories}" th:value="${category.id}" th:text="${category.name}"></option>
-```
-
----
-
-## 15-6. `addTask.html` と Controller の日付パラメータ名が不自然
-
-`addTask.html` では以下です。
-
-```html
-<input type="date" name="closing_date">
-```
-
-Controllerも以下です。
-
-```java
-@RequestParam(defaultValue = "") LocalDate closing_date
-```
-
-動作する可能性はありますが、Javaの命名としては `closingDate` の方が自然です。
-
-### 対応方針
-
-HTML側を以下に変更します。
-
-```html
-<input type="date" name="closingDate">
-```
-
-Controller側も以下に変更します。
-
-```java
-@RequestParam LocalDate closingDate
-```
-
-Entity側もできれば `closingDate` に統一するとよいです。
-
----
-
-## 15-7. `editTask.html` のカテゴリ選択で `selectedCategoryId` が渡されていない
-
-`editTask.html` には以下があります。
-
-```html
-th:selected="${category.id == selectedCategoryId}"
-```
-
-しかし、Controller側では `selectedCategoryId` をModelに追加していません。
-
-### 対応方針
-
-Controllerで以下を追加します。
-
-```java
-model.addAttribute("selectedCategoryId", task.getCategory().getId());
-```
-
-または、HTML側で以下のように直接比較します。
-
-```html
-th:selected="${category.id == task.category.id}"
-```
-
----
-
-## 15-8. 更新・削除時に他ユーザーのタスクを操作できる可能性がある
-
-現在、更新・削除ではIDだけで対象タスクを取得しています。
-
-```java
-Task task = taskRepository.findById(id).get();
-taskRepository.deleteById(id);
-```
-
-このままだと、URLのIDを直接変更された場合、他ユーザーのタスクを更新・削除できる可能性があります。
-
-### 対応方針
-
-対象タスクの `userId` と `account.getId()` が一致するか確認します。
-
-```java
-if (!task.getUserId().equals(account.getId())) {
-    return "redirect:/tasks";
-}
-```
-
----
-
-## 15-9. パスワード入力欄が `type="text"` になっている
-
-`login.html` と `userForm.html` のパスワード入力欄が通常のテキスト入力になっています。
-
-### 対応方針
-
-以下に修正します。
-
-```html
-<input type="password" name="password">
-```
-
----
-
-## 15-10. 新規ユーザー登録時にメールアドレス重複チェックがない
-
-現在、新規登録時に同じメールアドレスが登録済みか確認していません。
-
-### 対応方針
-
-`UserRepository.java` に以下を追加します。
-
-```java
-List<User> findByEmail(String email);
-```
-
-登録時に以下で確認します。
-
-```java
-List<User> userList = userRepository.findByEmail(email);
-if (userList != null && userList.size() > 0) {
-    errorList.add("登録済みのメールアドレスです");
-}
-```
-
----
-
-## 15-11. ログアウトリンクが `/login` になっている
-
-`header.html` のログアウトリンクは以下です。
-
-```html
-<a href="/login" onclick="return confirm('本当にログアウトしますか？');">ログアウト</a>
-```
-
-`/login` にアクセスすると `session.invalidate()` されるため動作はします。
-
-ただし、意味としては `/logout` を用意した方が自然です。
-
-### 対応方針
-
-`UserController` に以下を追加します。
-
-```java
-@GetMapping("/logout")
-public String logout() {
-    session.invalidate();
-    return "redirect:/login";
-}
-```
-
-HTML側は以下にします。
-
-```html
-<a href="/logout" onclick="return confirm('本当にログアウトしますか？');">ログアウト</a>
-```
-
----
-
-## 15-12. タスク追加時にcategoryId未選択の場合の対策がない
-
-現在、`categoryId` が `null` の場合でも以下を実行します。
-
-```java
-Category category = categoryRepository.findById(categoryId).get();
-```
-
-`categoryId` が `null` の場合、エラーになります。
-
-### 対応方針
-
-必須チェックを追加します。
-
-```java
-if (categoryId == null) {
-    // エラーとしてaddTaskに戻す
-}
-```
-
----
-
-## 15-13. `schema.sql` のDROP順は現在は安全
-
-現在のDROP順は以下です。
-
-```sql
-DROP TABLE IF EXISTS tasks;
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS categories;
-```
-
-`tasks` が `users` と `categories` を参照しているため、先に `tasks` を削除している点は正しいです。
-
-ただし、より明確にしたい場合は以下の順でもよいです。
-
-```sql
-DROP TABLE IF EXISTS tasks;
-DROP TABLE IF EXISTS categories;
-DROP TABLE IF EXISTS users;
-```
-
-どちらでも、`tasks` が先に削除されていれば大きな問題はありません。
-
----
-
-# 16. 実装要領
-
-## 16-1. AccountにユーザーIDを追加する
-
-### 対象ファイル
-
-```text
-src/main/java/com/example/demo/model/Account.java
-```
-
-### 追加するフィールド
-
-```java
-private Integer id;
-```
-
-### 追加するgetter/setter
-
-```java
-public Integer getId() {
-    return id;
-}
-
-public void setId(Integer id) {
-    this.id = id;
-}
-```
-
----
-
-## 16-2. ログイン成功時にAccountへユーザーIDを保存する
-
-### 対象ファイル
-
-```text
-src/main/java/com/example/demo/controller/UserController.java
-```
-
-### 現在
-
-```java
-account.setName(user.getName());
-```
-
-### 修正方針
-
-```java
-account.setId(user.getId());
-account.setName(user.getName());
-```
-
----
-
-## 16-3. TaskControllerにAccountをDIする
-
-### 対象ファイル
-
-```text
-src/main/java/com/example/demo/controller/TaskController.java
-```
-
-### 追加するフィールド
-
-```java
-private final Account account;
-```
-
-### コンストラクタに追加
-
-```java
-public TaskController(
-        TaskRepository taskRepository,
-        CategoryRepository categoryRepository,
-        Account account) {
-    this.taskRepository = taskRepository;
-    this.categoryRepository = categoryRepository;
-    this.account = account;
-}
-```
-
----
-
-## 16-4. 未ログイン時のアクセス制御を追加する
-
-### 対象ファイル
-
-```text
-src/main/java/com/example/demo/controller/TaskController.java
-```
-
-### 各処理の先頭に追加
-
-```java
-if (account.getId() == null) {
-    return "redirect:/login";
-}
-```
-
-対象は以下です。
-
-- `/tasks`
-- `/tasks/new`
-- `/tasks/add`
-- `/tasks/{id}/edit` GET
-- `/tasks/{id}/edit` POST
-- `/tasks/{id}/delete`
-
----
-
-## 16-5. TaskRepositoryにユーザー別検索を追加する
-
-### 対象ファイル
-
-```text
-src/main/java/com/example/demo/repository/TaskRepository.java
-```
-
-### 追加するメソッド
-
-```java
-List<Task> findByUserId(Integer userId);
-
-List<Task> findByUserIdAndCategoryId(Integer userId, Integer categoryId);
-
-List<Task> findByUserIdAndTitleContaining(Integer userId, String keyword);
-```
-
----
-
-## 16-6. タスク一覧をログインユーザーで絞り込む
-
-### 対象ファイル
-
-```text
-src/main/java/com/example/demo/controller/TaskController.java
-```
-
-### 修正方針
-
-現在の `findAll()`、`findByCategoryId()`、`findByTitleContaining()` を、ユーザーID付きの検索に変更します。
-
-```java
-if (categoryId != null) {
-    taskList = taskRepository.findByUserIdAndCategoryId(account.getId(), categoryId);
-} else if (keyword.length() > 0) {
-    taskList = taskRepository.findByUserIdAndTitleContaining(account.getId(), keyword);
-} else {
-    taskList = taskRepository.findByUserId(account.getId());
-}
-```
-
----
-
-## 16-7. タスク登録時にuserIdを保存する
-
-### 対象ファイル
-
-```text
-src/main/java/com/example/demo/controller/TaskController.java
-```
-
-### 追加する処理
-
-```java
-task.setUserId(account.getId());
-```
-
-保存前に追加します。
-
-```java
-Task task = new Task(category, title, closingDate, progress, memo);
-task.setUserId(account.getId());
-taskRepository.save(task);
-```
-
----
-
-## 16-8. 新規タスク画面にカテゴリ一覧を渡す
-
-### 対象ファイル
-
-```text
-src/main/java/com/example/demo/controller/TaskController.java
-```
-
-### 修正方針
-
-```java
-@GetMapping("/tasks/new")
-public String add(Model model) {
-    if (account.getId() == null) {
-        return "redirect:/login";
-    }
-
-    List<Category> categoryList = categoryRepository.findAll();
-    model.addAttribute("categories", categoryList);
-
-    return "addTask";
-}
-```
-
-`addTask.html` 側は以下にします。
-
-```html
-<option th:each="category:${categories}" th:value="${category.id}" th:text="${category.name}"></option>
-```
-
----
-
-## 16-9. 日付パラメータ名を整理する
-
-### 対象ファイル
-
-```text
-src/main/resources/templates/addTask.html
-src/main/resources/templates/editTask.html
-src/main/java/com/example/demo/controller/TaskController.java
-src/main/java/com/example/demo/entity/Task.java
-```
-
-### 修正方針
-
-現在の `closing_date` を、できれば `closingDate` に統一します。
-
-```html
-<input type="date" name="closingDate">
-```
-
-```java
-@RequestParam LocalDate closingDate
-```
-
-Entityも以下のようにする方が自然です。
-
-```java
-@Column(name = "closing_date")
-private LocalDate closingDate;
-```
-
----
-
-## 16-10. 更新・削除時にログインユーザーIDを確認する
-
-### 対象ファイル
-
-```text
-src/main/java/com/example/demo/controller/TaskController.java
-```
-
-### 修正方針
-
-更新・削除前に以下を確認します。
-
-```java
-Task task = taskRepository.findById(id).get();
-
-if (!task.getUserId().equals(account.getId())) {
-    return "redirect:/tasks";
-}
-```
-
----
-
-## 16-11. パスワード入力欄を修正する
-
-### 対象ファイル
-
-```text
-src/main/resources/templates/login.html
-src/main/resources/templates/userForm.html
-```
-
-### 修正方針
-
-```html
-<input type="password" name="password">
-```
-
----
-
-## 16-12. メールアドレス重複チェックを追加する
-
-### 対象ファイル
-
-```text
-src/main/java/com/example/demo/repository/UserRepository.java
-src/main/java/com/example/demo/controller/UserController.java
-```
-
-### Repositoryに追加
-
-```java
-List<User> findByEmail(String email);
-```
-
-### Controllerで確認
-
-```java
-List<User> userList = userRepository.findByEmail(email);
-if (userList != null && userList.size() > 0) {
-    errorList.add("登録済みのメールアドレスです");
-}
-```
-
----
-
-## 16-13. `/logout` を追加する
-
-### 対象ファイル
-
-```text
-src/main/java/com/example/demo/controller/UserController.java
-```
-
-### 追加する処理
-
-```java
-@GetMapping("/logout")
-public String logout() {
-    session.invalidate();
-    return "redirect:/login";
-}
-```
-
-### header.html側
-
-```html
-<a href="/logout" onclick="return confirm('本当にログアウトしますか？');">ログアウト</a>
-```
-
----
-
-# 17. 修正優先順位
-
-| 優先度 | 修正内容 |
-|---|---|
-| 最優先 | `Account.java` に `id` を追加する |
-| 最優先 | ログイン成功時に `account.setId(user.getId())` を追加する |
-| 最優先 | `TaskController.java` に `Account` をDIする |
-| 最優先 | 未ログイン状態で `/tasks` 系URLにアクセスできないようにする |
-| 高 | タスク登録時に `task.setUserId(account.getId())` を追加する |
-| 高 | `TaskRepository.java` にユーザー別検索メソッドを追加する |
-| 高 | タスク一覧をログインユーザーIDで絞り込む |
-| 高 | 更新・削除時に他ユーザーのタスクを操作できないようにする |
-| 中 | 新規タスク画面にカテゴリ一覧を渡す |
-| 中 | 日付パラメータ名を `closingDate` に統一する |
-| 中 | パスワード入力欄を `type="password"` にする |
-| 中 | メールアドレス重複チェックを追加する |
-| 中 | `/logout` を追加してログアウト導線を明確にする |
-| 低 | HTML構造とCSSを整える |
-
----
-
-# 18. マスト機能の達成状況
-
-| 機能 | 現在の状態 | 備考 |
-|---|---|---|
-| 新規ユーザー登録 | 実装済み | ただしメール重複チェックは不足 |
-| ログイン | 実装済み | ただしユーザーIDをAccountに保持していない |
-| ログアウト | 実装済み扱い | `/login` でセッション破棄しているが `/logout` を作る方が自然 |
-| タスク一覧表示 | 実装済み | ただし全ユーザー共通表示 |
-| タイトル検索 | 実装済み | ただし全ユーザー共通検索 |
-| カテゴリ別表示 | 実装済み | ただし全ユーザー共通検索 |
-| タスク新規登録 | 実装済み | ただしuserId未保存 |
-| タスク更新 | 実装済み | ただし他ユーザーデータ保護が不足 |
-| タスク削除 | 実装済み | ただし他ユーザーデータ保護が不足 |
-| 未ログイン対策 | 未実装 | 直接URLアクセス対策が必要 |
-
----
-
-# 19. 今後追加するとよい機能
-
-- ログインユーザー別のタスク管理
-- メールアドレス重複チェック
-- タスク完了・未完了の絞り込み
-- 期限が近いタスクの強調表示
-- カテゴリ追加機能
-- カテゴリ編集・削除機能
-- タスク検索条件の複合検索
-- パスワードのハッシュ化
-- スマートフォン対応デザイン
-- タスク件数の表示
-- 完了率の表示
-
----
-
-# 20. 最終まとめ
-
-このアプリは、ユーザー登録・ログイン後にタスクを管理するToDoリストアプリです。
-
-現在、ログイン、新規ユーザー登録、タスク一覧、検索、カテゴリ絞り込み、タスク登録、更新、削除の基本機能は実装されています。
-
-一方で、ログインユーザーIDを `Account` に保持していないため、タスクをユーザーごとに管理できていません。  
-また、タスク登録時に `user_id` を保存しておらず、一覧表示・検索・カテゴリ表示も全ユーザー共通になっています。
-
-まずは、`Account.java` に `id` を追加し、ログイン成功時に `account.setId(user.getId())` を行います。
-
-次に、`TaskController.java` に `Account` をDIし、未ログイン時のアクセス制御と、タスク登録時の `userId` 保存を追加します。
-
-その後、`TaskRepository.java` にユーザー別検索メソッドを追加し、一覧表示・タイトル検索・カテゴリ検索をログインユーザーのタスクだけに絞り込みます。
-
-最後に、更新・削除時の他ユーザーデータ保護、パスワード入力欄、メールアドレス重複チェック、ログアウトURLを整えることで、マスト機能として安定した状態にできます。
+この順番で見ると、「画面で何をしたいか」から「DBでどう保存しているか」まで自然につながります。

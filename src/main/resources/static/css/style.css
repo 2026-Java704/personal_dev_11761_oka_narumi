@@ -205,6 +205,12 @@ footer p {
     border-right: none;
 }
 
+.complete-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
 /*進捗状況と重要度のボタン*/
 table td > span:not([class]) {
     font-size: 0.75rem;

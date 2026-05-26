@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>履歴一覧 - ToDoアプリ</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link rel="icon" href="/icons/checkIcon.png">
+</head>
+
+<body>
+	<header th:replace="~{header}"></header>
+
+	<main class="main-container">
+		<h2 class="section-title" style="color: #ffffff; margin-bottom: 25px;">履歴一覧</h2>
+
+		<div class="table-card">
+			<table class="task-table">
+				<thead>
+					<tr>
+						<th>タイトル</th>
+						<th>カテゴリー</th>
+						<th>期限</th>
+						<th>進捗状況</th>
+						<th>重要度</th>
+						<th>メモ</th>
+					</tr>
+				</thead>
+
+				<tr th:each="task:${tasks}">
+					<td th:text="${task.title}"></td>
+					<td th:text="${task.category.name}"></td>
+					<td th:text="${task.closingDate}"></td>
+					<td>完了</td>
+					<td>
+						<span class="importance-1" th:if="${task.importance==0}">高</span>
+						<span class="importance-2" th:if="${task.importance==1}">中</span>
+						<span class="importance-3" th:if="${task.importance==2}">低</span>
+					</td>
+					<td th:text="${task.memo}"></td>
+				</tr>
+			</table>
+		</div>
+
+		<div class="bottom-links">
+			<a href="/tasks" class="btn-link-text">タスク一覧に戻る</a>
+		</div>
+	</main>
+
+	<footer th:replace="~{footer}"></footer>
+</body>
+
+</html>

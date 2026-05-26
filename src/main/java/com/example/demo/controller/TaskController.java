@@ -54,21 +54,34 @@ public class TaskController {
 		// タスク一覧情報の取得
 		List<Task> taskList = null;
 		if (categoryId != null) {
-			taskList = taskRepository.findByUserIdAndCategoryId(account.getId(), categoryId);
+			taskList = taskRepository.findByUserIdAndCategoryIdAndCompletedFalse(account.getId(), categoryId);
 		} else if (keyword.length() > 0) {
-			taskList = taskRepository.findByUserIdAndTitleContaining(account.getId(), keyword);
+			taskList = taskRepository.findByUserIdAndTitleContainingAndCompletedFalse(account.getId(), keyword);
 		} else if ("closingDateAsc".equals(sort)) {
-			taskList = taskRepository.findByUserIdOrderByClosingDateAsc(account.getId());
+			taskList = taskRepository.findByUserIdAndCompletedFalseOrderByClosingDateAsc(account.getId());
 		} else if (importance != null) {
-			taskList = taskRepository.findByUserIdAndImportance(account.getId(), importance);
+			taskList = taskRepository.findByUserIdAndImportanceAndCompletedFalse(account.getId(), importance);
 		} else {
-			taskList = taskRepository.findByUserId(account.getId());
+			taskList = taskRepository.findByUserIdAndCompletedFalse(account.getId());
 		}
 
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("tasks", taskList);
 
 		return "tasks";
+	}
+
+	@GetMapping("/tasks/history")
+	public String history(Model model) {
+
+		if (account.getId() == null) {
+			return "redirect:/login";
+		}
+
+		List<Task> taskList = taskRepository.findByUserIdAndCompletedTrue(account.getId());
+		model.addAttribute("tasks", taskList);
+
+		return "history";
 	}
 
 	// 新規タスク画面の表示
@@ -124,7 +137,12 @@ public class TaskController {
 		Category category = categoryRepository.findById(categoryId).get();
 
 		//Taskオブジェクトの生成
-		Task task = new Task(account.getId(), category, title, closingDate, progress, importance, memo);
+		Boolean completed = false;
+		if (progress != null && progress == 2) {
+			completed = true;
+		}
+
+		Task task = new Task(account.getId(), category, title, closingDate, progress, importance, memo, completed);
 		//tasksテーブルへの反映（INSERT）
 		taskRepository.save(task);
 		//
@@ -181,11 +199,36 @@ public class TaskController {
 		task.setProgress(progress);
 		task.setImportance(importance);
 		task.setMemo(memo);
+		if (progress != null && progress == 2) {
+			task.setCompleted(true);
+		} else {
+			task.setCompleted(false);
+		}
 
 		//tasksテーブルへの反映（UPDATE）
 		taskRepository.save(task);
 		//「/tasks」にGETでリクエストし直す（リダイレクト）
 		return "redirect:/tasks";
+	}
+
+	@PostMapping("/tasks/{id}/complete")
+	public String complete(@PathVariable Integer id) {
+
+		if (account.getId() == null) {
+			return "redirect:/login";
+		}
+
+		Task task = taskRepository.findById(id).get();
+
+		if (!task.getUserId().equals(account.getId())) {
+			return "redirect:/tasks";
+		}
+
+		task.setCompleted(true);
+		task.setProgress(2);
+		taskRepository.save(task);
+
+		return "redirect:/tasks/history";
 	}
 
 	//削除処理
