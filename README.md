@@ -372,8 +372,8 @@ PostgreSQL 接続を正しいURLに修正しました。
 ```properties
 spring.datasource.driver-class-name=org.postgresql.Driver
 spring.datasource.url=jdbc:postgresql://localhost:5432/personal_dev_11761_oka_narumi
-spring.datasource.username=postgres
-spring.datasource.password=0001
+spring.datasource.username=student
+spring.datasource.password=himitu
 spring.jpa.show-sql=true
 spring.sql.init.mode=always
 ```
