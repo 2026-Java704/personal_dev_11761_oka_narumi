@@ -576,3 +576,10 @@ td:last-child .btn-edit-delete {
 .kaigyo{
 	display: inline-block;
 }
+
+/* タスク完了チェックボックス */
+.complete-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}

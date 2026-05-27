@@ -25,6 +25,7 @@ CREATE TABLE tasks (
     progress INTEGER,
     importance INTEGER,
     memo TEXT,
+    completed BOOLEAN,
     FOREIGN KEY(category_id) REFERENCES categories(id),
     FOREIGN KEY(user_id) REFERENCES users(id)
 );

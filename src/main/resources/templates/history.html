@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>タスク履歴画面</title>
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<!--<link rel="stylesheet" type="text/css" href="../static/css/style.css">-->
+	<link rel="icon" href="/icons/checkIcon.png">
+</head>
+<body>
+	<header th:replace="~{header}"></header>
+	
+	<table>
+		<tr>
+			<!--						<th>NO</th>-->
+<!--			<th>完了</th>-->
+			<th>タイトル</th>
+			<th>カテゴリー</th>
+			<th>期限</th>
+			<th>進捗状況</th>
+<!--			<th>重要度</th>-->
+			<th>メモ</th>
+		</tr>
+		<tr th:each="task:${tasks}">
+		    <td th:text="${task.title}"></td>
+		    <td th:text="${task.category.name}"></td>
+		    <td th:text="${task.closingDate}"></td>
+		    <td>完了</td>
+		    <td th:text="${task.memo}"></td>
+		</tr>
+	</table>
+	
+	<footer th:replace="~{footer}"></footer>
+</body>
+</html>

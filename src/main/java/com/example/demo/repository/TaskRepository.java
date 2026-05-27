@@ -22,4 +22,18 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
 	List<Task> findByUserIdOrderByClosingDateAsc(Integer userId);
 
 	List<Task> findByUserIdAndImportance(Integer userId, Integer importance);
+
+	//Completed関連追加
+
+	List<Task> findByUserIdAndCompletedFalse(Integer userId);
+
+	List<Task> findByUserIdAndCompletedTrue(Integer userId);
+
+	List<Task> findByUserIdAndCategoryIdAndCompletedFalse(Integer userId, Integer categoryId);
+
+	List<Task> findByUserIdAndTitleContainingAndCompletedFalse(Integer userId, String keyword);
+
+	List<Task> findByUserIdAndCompletedFalseOrderByClosingDateAsc(Integer userId);
+
+	List<Task> findByUserIdAndImportanceAndCompletedFalse(Integer userId, Integer importance);
 }
